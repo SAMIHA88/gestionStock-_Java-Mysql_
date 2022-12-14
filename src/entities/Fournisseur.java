@@ -13,6 +13,16 @@ public class Fournisseur {
 		this.telephone = telephone;
 		this.email = email;
 	}
+	
+
+	public Fournisseur(int id, String nom, String telephone, String email) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.telephone = telephone;
+		this.email = email;
+	}
+
 
 	public int getId() {
 		return id;

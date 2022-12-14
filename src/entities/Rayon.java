@@ -20,6 +20,12 @@ public class Rayon {
 		
 	}
 
+	public Rayon(int id, String code, List<Produit> produits) {
+		this.id = id;
+		this.code = code;
+		this.produits = produits;
+	}
+
 
 
 	public List<Produit> getProduits() {

@@ -13,6 +13,16 @@ public class Client {
 		this.telephone = telephone;
 		this.email = email;
 	}
+	
+
+	public Client(int id, String nom, String telephone, String email) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.telephone = telephone;
+		this.email = email;
+	}
+
 
 	public int getId() {
 		return id;

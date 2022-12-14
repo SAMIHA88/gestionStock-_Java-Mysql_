@@ -1,49 +1,108 @@
 package services;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import connexion.connexion;
 import dao.IDao;
+import entities.Fournisseur;
 import entities.Produit;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 
 public class ProduitService implements IDao<Produit> {
-
-	private List<Produit> produits;
-
-	public ProduitService() {
-		produits = new ArrayList<Produit>();
-	}
-
+        private CategorieService cs;
+        
+       ProduitService(){
+           cs=new CategorieService();
+       }
 	@Override
 	public boolean create(Produit o) {
-		return produits.add(o);
+		try {
+			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie()+"' ,'"+ o.getTva() + "' ) ";
+			Statement st = connexion.getConnection().createStatement();
+			if(st.executeUpdate(sql)==1) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
 	}
 
 	@Override
 	public boolean delete(Produit o) {
 		// TODO Auto-generated method stub
-		return produits.remove(o);
+		try {
+			String sql ="delete from produit where id= "+o.getId();
+			Statement st = connexion.getConnection().createStatement();
+			if(st.executeUpdate(sql)==1) {
+				
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
+	
 
 	@Override
-	public boolean update(Produit newProduit) {
-	Produit oldProduit = findById(newProduit.getId());
-	oldProduit.setId(newProduit.getId());
-	oldProduit.setDesignation(newProduit.getDesignation());
-	oldProduit.setPrixAchat(newProduit.getPrixAchat());
-		return true;
+	public boolean update(Produit o) {
+         try {
+			String req = "update produit set designation = ? , prixAchat = ?, categorie = ?, tva = ? where id = ?";
+			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
+			ps.setString(1, o.getDesignation());
+			ps.setDouble(2, o.getPrixAchat());
+			ps.setInt(3, o.getCategorie().getId());
+			ps.setDouble(5, o.getTva());
+			ps.setInt(6, o.getId());
+			if (ps.executeUpdate() == 1)
+				return true;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public Produit findById(int id) {
-		for (Produit s : produits)
-			if (s.getId() == id)
-				return s;
-		return null;
+			Produit produit= null;
+        try {
+            String sql = "select * from produit where id = " + id;
+            Statement st = connexion.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	@Override
 	public List<Produit> findAll() {
+		List<Produit> produits = new ArrayList<Produit>();
+		try {
+			String sql="select * from produit ";
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return produits;
 	}
 

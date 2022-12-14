@@ -5,14 +5,26 @@ public class Produit {
 	private String designation;
 	private double prixAchat;
 	private double tva;
+	private Categorie categorie;
 	private static int comp;
 
-	public Produit(String designation, double prixAchat,double tva) {
+	public Produit(String designation, double prixAchat,Categorie categorie,double tva) {
 		this.id = ++comp;
 		this.designation = designation;
 		this.prixAchat = prixAchat;
+		this.categorie=categorie;
 		this.tva=tva;
 	}
+
+	
+	public Produit(int id, String designation, double prixAchat, Categorie categorie,double tva ) {
+		this.id = id;
+		this.designation = designation;
+		this.prixAchat = prixAchat;
+		this.tva = tva;
+		this.categorie = categorie;
+	}
+
 
 	public int getId() {
 		return id;
@@ -42,6 +54,19 @@ public class Produit {
 	}
 
 	public void setTva(int tva) {
+		this.tva = tva;
+	}
+	
+
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+	public void setTva(double tva) {
 		this.tva = tva;
 	}
 

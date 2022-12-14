@@ -1,57 +1,105 @@
 package services;
 
+import connexion.connexion;
+import entities.Commande;
+import entities.Demande;
+import entities.Produit;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.IDao;
-import entities.Commande;
-import entities.LigneCommande;
-
-public class CommandeService implements IDao<Commande> {
-
-	private List<Commande> commandes;
-
-	public CommandeService() {
-		commandes = new ArrayList<Commande>();
-	}
-
-	@Override
+public class CommandeService {
+        private ClientService cls;
+        
+       CommandeService(){
+           cls=new ClientService();
+       }
+	
 	public boolean create(Commande o) {
-		return commandes.add(o);
+		try {
+			String sql ="insert into commande values(null ,'" + o.getDate()+ "' ,'" + o.getClient().getId()+ "' ) ";
+			Statement st = connexion.getConnection().createStatement();
+			if(st.executeUpdate(sql)==1) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
 	}
 
-	@Override
+	
 	public boolean delete(Commande o) {
 		// TODO Auto-generated method stub
-		return commandes.remove(o);
-	}
-
-	@Override
-	public boolean update(Commande newCommande) {
-//		Commande oldCommande = findById(newCommande.getId());
-//		oldCommande.setCode(newCommande.getCode());
-//		oldCommande.setLibelle(newCommande.getLibelle());
-		return true;
-	}
-
-	@Override
-	public Commande findById(int code) {
-		for (Commande s : commandes)
-			if (s.getCode() == code)
-				return s;
-		return null;
-	}
-
-	@Override
-	public List<Commande> findAll() {
-		return commandes;
-	}
-
-	public double getTotalPrix(int code) {
-		double total = 0;
-		for(LigneCommande lc : findById(code).getLigneCommandes()) {
-			total += lc.getPrixVente() * lc.getQuantite();
+		try {
+			String sql ="delete from commande where code= "+o.getCode();
+			Statement st = connexion.getConnection().createStatement();
+			if(st.executeUpdate(sql)==1) {
+				
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return total;
+		return false;
+	}
+	
+
+	
+	public boolean update(Commande o) {
+         try {
+			String req = "update commande set date = ? , client = ? where code = ?";
+			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
+			ps.setDate(1, new Date(o.getDate().getTime()));
+			ps.setInt(2, o.getClient().getId());
+			ps.setInt(3, o.getCode());
+			if (ps.executeUpdate() == 1)
+				return true;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	
+	public Commande findById(int id) {
+			Commande commande= null;
+        try {
+            String sql = "select * from commande where id = " + id;
+            Statement st = connexion.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                return new Commande(rs.getInt("code"), rs.getDate("date"),cls.findById(rs.getInt("client")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+	}
+
+
+	public List<Commande> findAll() {
+		List<Commande> commandes = new ArrayList<Commande>();
+		try {
+			String sql="select * from commande ";
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				commandes.add(new Commande(rs.getInt("code"), rs.getDate("date"),cls.findById(rs.getInt("client"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return commandes;
 	}
 }
