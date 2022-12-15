@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 
 public class ProduitService implements IDao<Produit> {
         private CategorieService cs;
+        private RayonService rys;
         
        ProduitService(){
            cs=new CategorieService();
@@ -22,7 +23,7 @@ public class ProduitService implements IDao<Produit> {
 	@Override
 	public boolean create(Produit o) {
 		try {
-			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie()+"' ,'"+ o.getTva() + "' ) ";
+			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie()+"' ,'"+ o.getTva() + "' ,'"+ o.getRayon() + "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;
@@ -81,7 +82,7 @@ public class ProduitService implements IDao<Produit> {
             Statement st = connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"));
+                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("id")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,7 +98,7 @@ public class ProduitService implements IDao<Produit> {
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva")));
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("id"))));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

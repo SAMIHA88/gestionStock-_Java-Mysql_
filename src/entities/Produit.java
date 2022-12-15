@@ -6,23 +6,26 @@ public class Produit {
 	private double prixAchat;
 	private double tva;
 	private Categorie categorie;
+        private Rayon rayon;
 	private static int comp;
 
-	public Produit(String designation, double prixAchat,Categorie categorie,double tva) {
+	public Produit(String designation, double prixAchat,Categorie categorie,double tva,Rayon rayon) {
 		this.id = ++comp;
 		this.designation = designation;
 		this.prixAchat = prixAchat;
 		this.categorie=categorie;
 		this.tva=tva;
+                this.rayon=rayon;
 	}
 
 	
-	public Produit(int id, String designation, double prixAchat, Categorie categorie,double tva ) {
+	public Produit(int id, String designation, double prixAchat, Categorie categorie,double tva ,Rayon rayon) {
 		this.id = id;
 		this.designation = designation;
 		this.prixAchat = prixAchat;
 		this.tva = tva;
 		this.categorie = categorie;
+                this.rayon=rayon;
 	}
 
 
@@ -69,6 +72,15 @@ public class Produit {
 	public void setTva(double tva) {
 		this.tva = tva;
 	}
+
+    public Rayon getRayon() {
+        return rayon;
+    }
+
+    public void setRayon(Rayon rayon) {
+        this.rayon = rayon;
+    }
+        
 
 	@Override
 	public String toString() {
