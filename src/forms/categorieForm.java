@@ -69,7 +69,7 @@ public class categorieForm extends javax.swing.JInternalFrame {
         btnModifier.setText("Modifier");
 
         pan.setBackground(new java.awt.Color(255, 255, 255));
-        pan.setBorder(javax.swing.BorderFactory.createTitledBorder("les informations des categories"));
+        pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Les informations des categories", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
 
         listeCategories.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

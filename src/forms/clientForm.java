@@ -113,7 +113,7 @@ public class clientForm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "id", "nom", "Email", "Telephone"
+                "id", "nom", "Téléphone", "Email"
             }
         ));
         jScrollPane2.setViewportView(tableClients);

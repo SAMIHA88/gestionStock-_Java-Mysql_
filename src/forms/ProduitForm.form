@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
@@ -53,7 +53,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtTva" min="-2" pref="132" max="-2" attributes="0"/>
                                   <Component id="txtPhoto" min="-2" pref="132" max="-2" attributes="0"/>
-                                  <Component id="txtRayon" min="-2" pref="132" max="-2" attributes="0"/>
+                                  <Component id="rayonList" min="-2" pref="132" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -63,7 +63,7 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtCategorie" min="-2" pref="143" max="-2" attributes="0"/>
+                                  <Component id="categorieList" min="-2" pref="143" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                       <Component id="txtId" min="-2" pref="132" max="-2" attributes="0"/>
                                       <Component id="txtPrixAchat" min="-2" pref="132" max="-2" attributes="0"/>
@@ -109,7 +109,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCategorie" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="categorieList" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
@@ -126,7 +126,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtRayon" min="-2" max="-2" attributes="0"/>
+                          <Component id="rayonList" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -223,7 +223,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPhotoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="txtRayon">
+    <Component class="javax.swing.JComboBox" name="rayonList">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -235,7 +235,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="txtCategorie">
+    <Component class="javax.swing.JComboBox" name="categorieList">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">

@@ -5,7 +5,7 @@
  */
 package forms;
 
-//import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 /**
  *
  * @author samih
@@ -19,7 +19,7 @@ public class Main extends javax.swing.JFrame {
         initComponents();
          this.setTitle("Gestion des machines");
         this.setExtendedState(MAXIMIZED_BOTH);
-       // FlatLightLaf.setup();
+       FlatLightLaf.setup();
     }
 
     /**
@@ -45,10 +45,12 @@ public class Main extends javax.swing.JFrame {
         categorieForm = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        produitParCategorie = new javax.swing.JMenuItem();
+        produitsParRayon = new javax.swing.JMenuItem();
+        produitRuptureStock = new javax.swing.JMenuItem();
+        produitsEntreDeuxDates = new javax.swing.JMenuItem();
+        commandesParClient = new javax.swing.JMenuItem();
+        demandesParFournisseur = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -156,26 +158,59 @@ public class Main extends javax.swing.JFrame {
         editMenu.setMnemonic('e');
         editMenu.setText("Recherche");
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        produitParCategorie.setMnemonic('t');
+        produitParCategorie.setText("Produits par catégorie");
+        produitParCategorie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cutMenuItemActionPerformed(evt);
+                produitParCategorieActionPerformed(evt);
             }
         });
-        editMenu.add(cutMenuItem);
+        editMenu.add(produitParCategorie);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
+        produitsParRayon.setMnemonic('d');
+        produitsParRayon.setText("Produits par rayon");
+        produitsParRayon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produitsParRayonActionPerformed(evt);
+            }
+        });
+        editMenu.add(produitsParRayon);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
+        produitRuptureStock.setMnemonic('y');
+        produitRuptureStock.setText("Produits en rupture de stock");
+        produitRuptureStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produitRuptureStockActionPerformed(evt);
+            }
+        });
+        editMenu.add(produitRuptureStock);
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
+        produitsEntreDeuxDates.setMnemonic('p');
+        produitsEntreDeuxDates.setText("Produits les plus vendus entre 2 dates");
+        produitsEntreDeuxDates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produitsEntreDeuxDatesActionPerformed(evt);
+            }
+        });
+        editMenu.add(produitsEntreDeuxDates);
+
+        commandesParClient.setMnemonic('d');
+        commandesParClient.setText("Commandes par client");
+        commandesParClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                commandesParClientActionPerformed(evt);
+            }
+        });
+        editMenu.add(commandesParClient);
+
+        demandesParFournisseur.setMnemonic('d');
+        demandesParFournisseur.setText("Demandes par fournisseur");
+        demandesParFournisseur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                demandesParFournisseurActionPerformed(evt);
+            }
+        });
+        editMenu.add(demandesParFournisseur);
 
         menuBar.add(editMenu);
 
@@ -269,9 +304,12 @@ public class Main extends javax.swing.JFrame {
         pf.setVisible(true);
     }//GEN-LAST:event_produitFormActionPerformed
 
-    private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
+    private void produitParCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitParCategorieActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cutMenuItemActionPerformed
+         produitsParCategorieForm pcf = new produitsParCategorieForm();
+        desktopPane.add(pcf);
+        pcf.setVisible(true);
+    }//GEN-LAST:event_produitParCategorieActionPerformed
 
     private void commandeFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commandeFormActionPerformed
         // TODO add your handling code here:
@@ -279,6 +317,41 @@ public class Main extends javax.swing.JFrame {
         desktopPane.add(cf);
         cf.setVisible(true);
     }//GEN-LAST:event_commandeFormActionPerformed
+
+    private void commandesParClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commandesParClientActionPerformed
+        // TODO add your handling code here:
+         commandesParClientForm ccf = new commandesParClientForm();
+        desktopPane.add(ccf);
+        ccf.setVisible(true);
+    }//GEN-LAST:event_commandesParClientActionPerformed
+
+    private void demandesParFournisseurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demandesParFournisseurActionPerformed
+        // TODO add your handling code here:
+        demandesParFournisseurForm dff = new demandesParFournisseurForm();
+        desktopPane.add(dff);
+        dff.setVisible(true);
+    }//GEN-LAST:event_demandesParFournisseurActionPerformed
+
+    private void produitsParRayonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsParRayonActionPerformed
+        // TODO add your handling code here:
+         produitsParRayonForm prf = new produitsParRayonForm();
+        desktopPane.add(prf);
+        prf.setVisible(true);
+    }//GEN-LAST:event_produitsParRayonActionPerformed
+
+    private void produitRuptureStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitRuptureStockActionPerformed
+        // TODO add your handling code here:
+          produitRuptureStockForm prsf = new produitRuptureStockForm();
+        desktopPane.add(prsf);
+        prsf.setVisible(true);
+    }//GEN-LAST:event_produitRuptureStockActionPerformed
+
+    private void produitsEntreDeuxDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsEntreDeuxDatesActionPerformed
+        // TODO add your handling code here:
+         produitsEntreDeuxDatesForm pddf = new produitsEntreDeuxDatesForm();
+        desktopPane.add(pddf);
+        pddf.setVisible(true);
+    }//GEN-LAST:event_produitsEntreDeuxDatesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -320,11 +393,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem categorieForm;
     private javax.swing.JMenuItem commandeForm;
+    private javax.swing.JMenuItem commandesParClient;
     private javax.swing.JMenuItem contentMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem demandeForm;
+    private javax.swing.JMenuItem demandesParFournisseur;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
@@ -334,8 +406,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem ligneCommandeForm;
     private javax.swing.JMenuItem ligneDemandeForm;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem produitForm;
+    private javax.swing.JMenuItem produitParCategorie;
+    private javax.swing.JMenuItem produitRuptureStock;
+    private javax.swing.JMenuItem produitsEntreDeuxDates;
+    private javax.swing.JMenuItem produitsParRayon;
     private javax.swing.JMenuItem rayonForm;
     // End of variables declaration//GEN-END:variables
 
