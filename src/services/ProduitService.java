@@ -8,9 +8,9 @@ import java.util.List;
 
 import connexion.connexion;
 import dao.IDao;
-import entities.Fournisseur;
+import entities.Categorie;
 import entities.Produit;
-import java.sql.Date;
+import entities.Rayon;
 import java.sql.PreparedStatement;
 
 public class ProduitService implements IDao<Produit> {
@@ -23,7 +23,7 @@ public class ProduitService implements IDao<Produit> {
 	@Override
 	public boolean create(Produit o) {
 		try {
-			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie()+"' ,'"+ o.getTva() + "' ,'"+ o.getRayon() + "' ) ";
+			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie().getId()+"' ,'"+ o.getTva() + "' ,'"+ o.getRayon().getId() + "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;
@@ -76,13 +76,13 @@ public class ProduitService implements IDao<Produit> {
 
 	@Override
 	public Produit findById(int id) {
-			Produit produit= null;
+			Produit produit = null;
         try {
             String sql = "select * from produit where id = " + id;
             Statement st = connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("id")));
+                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,7 +98,69 @@ public class ProduitService implements IDao<Produit> {
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("id"))));
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return produits;
+	}
+
+        public List<Produit> findByRayon(Rayon r) {
+		List<Produit> produits = new ArrayList<Produit>();
+		try {
+			String sql="select * from produit where rayon= "+r.getId();
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return produits;
+	}
+         public List<Produit> findByCategorie(Categorie c) {
+		List<Produit> produits = new ArrayList<Produit>();
+		try {
+			String sql="select * from produit where categorie= "+c.getId();
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return produits;
+	}
+          public List<Produit> commandesBetweenDates(java.util.Date d1 ,java.util.Date d2) {
+		List<Produit> produits = new ArrayList<Produit>();
+		try {
+			String sql="select * from produit,lignecommande,commande where produit.id=lignecommande.produit and lignecommande.commande=commande.code and date between "+d1+"and"+d2;
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return produits;
+	}
+          
+                public List<Produit> demandesBetweenDates(java.util.Date d1 ,java.util.Date d2) {
+		List<Produit> produits = new ArrayList<Produit>();
+		try {
+			String sql="select * from produit,lignedemande,demande where produit.id=lignedemande.produit and lignedemande.demande=demande.code and date between "+d1+"and"+d2;
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

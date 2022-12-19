@@ -200,7 +200,7 @@ public class commandeForm extends javax.swing.JInternalFrame {
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
-        Date date = txtDate.getDate();
+      Date date = txtDate.getDate();
         Client client = (Client) clientList.getSelectedItem();
         if (cms.create(new Commande(date,client))) {
             JOptionPane.showMessageDialog(this, "Bien ajouté");

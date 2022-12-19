@@ -9,15 +9,7 @@ public class Produit {
         private Rayon rayon;
 	private static int comp;
 
-	public Produit(String designation, double prixAchat,Categorie categorie,double tva,Rayon rayon) {
-		this.id = ++comp;
-		this.designation = designation;
-		this.prixAchat = prixAchat;
-		this.categorie=categorie;
-		this.tva=tva;
-                this.rayon=rayon;
-	}
-
+	
 	
 	public Produit(int id, String designation, double prixAchat, Categorie categorie,double tva ,Rayon rayon) {
 		this.id = id;
@@ -28,6 +20,14 @@ public class Produit {
                 this.rayon=rayon;
 	}
 
+public Produit(String designation, double prixAchat,Categorie categorie,double tva,Rayon rayon) {
+		this.id = ++comp;
+		this.designation = designation;
+		this.prixAchat = prixAchat;
+		this.categorie=categorie;
+		this.tva=tva;
+                this.rayon=rayon;
+	}
 
 	public int getId() {
 		return id;

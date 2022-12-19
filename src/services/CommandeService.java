@@ -1,8 +1,10 @@
 package services;
 
 import connexion.connexion;
+import entities.Client;
 import entities.Commande;
 import entities.Demande;
+import entities.Fournisseur;
 import entities.Produit;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -91,6 +93,21 @@ public class CommandeService {
 		List<Commande> commandes = new ArrayList<Commande>();
 		try {
 			String sql="select * from commande ";
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				commandes.add(new Commande(rs.getInt("code"), rs.getDate("date"),cls.findById(rs.getInt("client"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return commandes;
+	}
+          public List<Commande> findByClient(Client c) {
+		List<Commande> commandes = new ArrayList<Commande>();
+		try {
+			String sql="select * from commande where client="+c.getId();
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {

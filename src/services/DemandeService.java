@@ -2,7 +2,7 @@ package services;
 
 import connexion.connexion;
 import entities.Demande;
-import entities.Produit;
+import entities.Fournisseur;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -101,4 +101,26 @@ public class DemandeService {
 		}
 		return demandes;
 	}
+         public List<Demande> findByFournisseur(Fournisseur f) {
+		List<Demande> demandes = new ArrayList<Demande>();
+		try {
+			String sql="select * from demande where fournisseur="+f.getId();
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				demandes.add(new Demande(rs.getInt("code"), rs.getDate("date"),fs.findById(rs.getInt("fournisseur"))));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return demandes;
+	}
+        /*public double getTotalPrix(int code) {
+		double total = 0;
+		for(LigneDemande lc : findById(code).getLigneDemande()) {
+			total += lc.getProduit().getPrixAchat() * lc.getQuantite();
+		}
+		return total;
+	}*/
 }

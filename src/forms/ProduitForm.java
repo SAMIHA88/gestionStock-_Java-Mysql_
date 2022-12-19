@@ -29,39 +29,36 @@ public class ProduitForm extends javax.swing.JInternalFrame {
      */
     public ProduitForm() {
         initComponents();
-        this.setTitle("Gestion des stocks");
-        ps=new ProduitService();
-        cs = new CategorieService();
-        loadCategorie();
-        rs = new RayonService();
-        loadRayon();
-        model = (DefaultTableModel) produitList.getModel();
-        loadProduit();
-        
+               ps = new ProduitService();
+        rs = new RayonService();  
+        loadRayons();
+        cs=new CategorieService();
+        loadCategories();
+        model = (DefaultTableModel) listProduit.getModel();
+     
+        loadProduits();
     }
- private void loadProduit() {
+
+    public void loadProduits(){
         model.setRowCount(0);
-        for(Produit p : ps.findAll()) {
+        for(Produit p : ps.findAll()){
             model.addRow(new Object[]{
                 p.getId(),
                 p.getDesignation(),
                 p.getPrixAchat(),
-                p.getCategorie(),
-                p.getTva(),
                 p.getRayon()
-           
             });
         }
     }
-
-    private void loadCategorie() {
-        for (Categorie c : cs.findAll()) {
-            categorieList.addItem(c);
-        }
+    
+    public void loadRayons(){
+        for(Rayon s : rs.findAll()){
+            rayonList.addItem(s);
+       }
     }
-       private void loadRayon() {
-        for (Rayon r : rs.findAll()) {
-            rayonList.addItem(r);
+      public void loadCategories(){
+        for(Categorie c : cs.findAll()){
+            categorieList.addItem(c);
         }
     }
     /**
@@ -88,7 +85,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         btnAdd = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        produitList = new javax.swing.JTable();
+        listProduit = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -129,6 +126,12 @@ public class ProduitForm extends javax.swing.JInternalFrame {
             }
         });
 
+        categorieList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categorieListActionPerformed(evt);
+            }
+        });
+
         btnModify.setBackground(new java.awt.Color(51, 153, 0));
         btnModify.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         btnModify.setText("Modifier");
@@ -159,7 +162,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des produits", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
 
-        produitList.setModel(new javax.swing.table.DefaultTableModel(
+        listProduit.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -167,7 +170,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
                 "id", "Designation", "Prix d'achat", "Catégorie", "TVA", "Rayon"
             }
         ));
-        jScrollPane1.setViewportView(produitList);
+        jScrollPane1.setViewportView(listProduit);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -290,7 +293,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         Rayon rayon=(Rayon) rayonList.getSelectedItem();
         if (ps.create(new Produit(designation, prixAchat, categorie, tva, rayon))) {
             JOptionPane.showMessageDialog(this, "Bien ajouté");
-            loadProduit();
+            loadProduits();
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -303,7 +306,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         Rayon rayon=(Rayon) rayonList.getSelectedItem();
         if(ps.update(new Produit(id,designation, prixAchat, categorie, tva, rayon))){
             JOptionPane.showMessageDialog(this, "Bien modifié");
-            loadProduit();
+            loadProduits();
     }//GEN-LAST:event_btnModifyActionPerformed
     }
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -312,11 +315,15 @@ public class ProduitForm extends javax.swing.JInternalFrame {
             int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer ce produit ? ");
             if(reponse == 0){
                 ps.delete(ps.findById(id));
-                loadProduit();
+                loadProduits();
                 JOptionPane.showMessageDialog(this, "Bien supprimé");
             }
       }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void categorieListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_categorieListActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -331,7 +338,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable produitList;
+    private javax.swing.JTable listProduit;
     private javax.swing.JComboBox rayonList;
     private javax.swing.JTextField txtDesignation;
     private javax.swing.JTextField txtPrixAchat;

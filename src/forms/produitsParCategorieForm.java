@@ -5,17 +5,51 @@
  */
 package forms;
 
+import entities.Categorie;
+import entities.Produit;
+import javax.swing.table.DefaultTableModel;
+import services.CategorieService;
+import services.ProduitService;
+
 /**
  *
  * @author samih
  */
 public class produitsParCategorieForm extends javax.swing.JInternalFrame {
+  private static int id;
+    private  ProduitService ps;
+    private CategorieService cs;
+     private DefaultTableModel model;
+    
 
     /**
      * Creates new form produitsParCategorie
      */
     public produitsParCategorieForm() {
         initComponents();
+     cs = new CategorieService();
+        loadCategorie();
+        ps =new ProduitService();
+       model = (DefaultTableModel) listeProduitParCategorie.getModel();
+        loadProduit();
+    }
+     private void loadCategorie() {
+        for (Categorie c : cs.findAll()) {
+           categorieList.addItem(c);
+        }
+    }
+      private void loadProduit() {
+        model.setRowCount(0);
+        for (Produit p : ps.findAll()) {
+            model.addRow(new Object[]{
+               p.getId(),
+                p.getDesignation(),
+                p.getPrixAchat(),
+                p.getCategorie(),
+                p.getTva(),
+                p.getRayon()
+            });
+        }
     }
 
     /**
@@ -29,11 +63,11 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
 
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        listeProduits2 = new javax.swing.JTable();
+        listeProduitParCategorie = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         btnRechercheSalle = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        rayonList = new javax.swing.JComboBox();
+        categorieList = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -44,7 +78,7 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des produits de cette catégorie", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
 
-        listeProduits2.setModel(new javax.swing.table.DefaultTableModel(
+        listeProduitParCategorie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -52,7 +86,7 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
                 "id", "Designation", "Prix d'achat", "Catégorie", "TVA", "Rayon"
             }
         ));
-        jScrollPane3.setViewportView(listeProduits2);
+        jScrollPane3.setViewportView(listeProduitParCategorie);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -84,9 +118,9 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("MV Boli", 1, 18)); // NOI18N
         jLabel1.setText("Donner la catégorie des produits à rechercher:");
 
-        rayonList.addActionListener(new java.awt.event.ActionListener() {
+        categorieList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rayonListActionPerformed(evt);
+                categorieListActionPerformed(evt);
             }
         });
 
@@ -101,7 +135,7 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(rayonList, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(categorieList, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(165, 165, 165)
                         .addComponent(btnRechercheSalle)))
@@ -113,7 +147,7 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(rayonList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(categorieList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRechercheSalle)
                 .addGap(18, 18, 18))
@@ -147,22 +181,34 @@ public class produitsParCategorieForm extends javax.swing.JInternalFrame {
 
     private void btnRechercheSalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechercheSalleActionPerformed
         // TODO add your handling code here:
+          Categorie categorie = (Categorie) categorieList.getSelectedItem();
+       model.setRowCount(0);
+          for (Produit p:ps.findByCategorie(categorie)) {
+            model.addRow(new Object[]{
+               p.getId(),
+                p.getDesignation(),
+                p.getPrixAchat(),
+                p.getCategorie(),
+                p.getTva(),
+                p.getRayon()
+            });
         
+        }
 
     }//GEN-LAST:event_btnRechercheSalleActionPerformed
 
-    private void rayonListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rayonListActionPerformed
+    private void categorieListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieListActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rayonListActionPerformed
+    }//GEN-LAST:event_categorieListActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRechercheSalle;
+    private javax.swing.JComboBox categorieList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable listeProduits2;
-    private javax.swing.JComboBox rayonList;
+    private javax.swing.JTable listeProduitParCategorie;
     // End of variables declaration//GEN-END:variables
 }

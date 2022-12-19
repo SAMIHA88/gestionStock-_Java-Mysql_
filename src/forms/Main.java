@@ -32,6 +32,7 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
+        jLabel2 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         ClientForm = new javax.swing.JMenuItem();
@@ -48,7 +49,8 @@ public class Main extends javax.swing.JFrame {
         produitParCategorie = new javax.swing.JMenuItem();
         produitsParRayon = new javax.swing.JMenuItem();
         produitRuptureStock = new javax.swing.JMenuItem();
-        produitsEntreDeuxDates = new javax.swing.JMenuItem();
+        produitsCommandesEntreDeuxDates = new javax.swing.JMenuItem();
+        produitsDemandesEntreDeuxDates = new javax.swing.JMenuItem();
         commandesParClient = new javax.swing.JMenuItem();
         demandesParFournisseur = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -56,6 +58,10 @@ public class Main extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\samih\\Desktop\\gestock.png")); // NOI18N
+        desktopPane.add(jLabel2);
+        jLabel2.setBounds(170, 140, 1000, 1000);
 
         menuBar.setFont(new java.awt.Font("Franklin Gothic Book", 1, 15)); // NOI18N
         menuBar.setName("Gestion du stock"); // NOI18N
@@ -185,14 +191,23 @@ public class Main extends javax.swing.JFrame {
         });
         editMenu.add(produitRuptureStock);
 
-        produitsEntreDeuxDates.setMnemonic('p');
-        produitsEntreDeuxDates.setText("Produits les plus vendus entre 2 dates");
-        produitsEntreDeuxDates.addActionListener(new java.awt.event.ActionListener() {
+        produitsCommandesEntreDeuxDates.setMnemonic('p');
+        produitsCommandesEntreDeuxDates.setText("Produits commandés entre 2 dates");
+        produitsCommandesEntreDeuxDates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                produitsEntreDeuxDatesActionPerformed(evt);
+                produitsCommandesEntreDeuxDatesActionPerformed(evt);
             }
         });
-        editMenu.add(produitsEntreDeuxDates);
+        editMenu.add(produitsCommandesEntreDeuxDates);
+
+        produitsDemandesEntreDeuxDates.setMnemonic('p');
+        produitsDemandesEntreDeuxDates.setText("Produits demandés entre 2 dates");
+        produitsDemandesEntreDeuxDates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produitsDemandesEntreDeuxDatesActionPerformed(evt);
+            }
+        });
+        editMenu.add(produitsDemandesEntreDeuxDates);
 
         commandesParClient.setMnemonic('d');
         commandesParClient.setText("Commandes par client");
@@ -346,12 +361,19 @@ public class Main extends javax.swing.JFrame {
         prsf.setVisible(true);
     }//GEN-LAST:event_produitRuptureStockActionPerformed
 
-    private void produitsEntreDeuxDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsEntreDeuxDatesActionPerformed
+    private void produitsCommandesEntreDeuxDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsCommandesEntreDeuxDatesActionPerformed
         // TODO add your handling code here:
-         produitsEntreDeuxDatesForm pddf = new produitsEntreDeuxDatesForm();
+         produitsCommandesEntreDeuxDatesForm pcdf = new produitsCommandesEntreDeuxDatesForm();
+        desktopPane.add(pcdf);
+        pcdf.setVisible(true);
+    }//GEN-LAST:event_produitsCommandesEntreDeuxDatesActionPerformed
+
+    private void produitsDemandesEntreDeuxDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsDemandesEntreDeuxDatesActionPerformed
+        // TODO add your handling code here:
+          produitsDemandesEntreDeuxDatesForm pddf = new produitsDemandesEntreDeuxDatesForm();
         desktopPane.add(pddf);
         pddf.setVisible(true);
-    }//GEN-LAST:event_produitsEntreDeuxDatesActionPerformed
+    }//GEN-LAST:event_produitsDemandesEntreDeuxDatesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,13 +425,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem fournisseurForm;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem ligneCommandeForm;
     private javax.swing.JMenuItem ligneDemandeForm;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem produitForm;
     private javax.swing.JMenuItem produitParCategorie;
     private javax.swing.JMenuItem produitRuptureStock;
-    private javax.swing.JMenuItem produitsEntreDeuxDates;
+    private javax.swing.JMenuItem produitsCommandesEntreDeuxDates;
+    private javax.swing.JMenuItem produitsDemandesEntreDeuxDates;
     private javax.swing.JMenuItem produitsParRayon;
     private javax.swing.JMenuItem rayonForm;
     // End of variables declaration//GEN-END:variables

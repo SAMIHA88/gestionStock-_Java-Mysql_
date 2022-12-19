@@ -55,7 +55,7 @@ public class Rayon {
 
 	@Override
 	public String toString() {
-		return "Rayon " + id + ", code=" + code ;
+		return "Rayon " + id  ;
 	}
 	
 

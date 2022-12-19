@@ -5,17 +5,51 @@
  */
 package forms;
 
+import entities.Produit;
+import entities.Rayon;
+import javax.swing.table.DefaultTableModel;
+import services.ProduitService;
+import services.RayonService;
+
 /**
  *
  * @author samih
  */
 public class produitsParRayonForm extends javax.swing.JInternalFrame {
+      private static int id;
+    private  ProduitService ps;
+    private RayonService rs;
+     private DefaultTableModel model;
+    
 
     /**
      * Creates new form produitsParRayon
      */
     public produitsParRayonForm() {
         initComponents();
+         rs = new RayonService();
+        loadRayon();
+        ps =new ProduitService();
+       model = (DefaultTableModel) listeProduitsParRayon.getModel();
+        loadProduit();
+    }
+     private void loadRayon() {
+        for (Rayon r : rs.findAll()) {
+           rayonList.addItem(r);
+        }
+    }
+      private void loadProduit() {
+        model.setRowCount(0);
+        for (Produit p : ps.findAll()) {
+            model.addRow(new Object[]{
+               p.getId(),
+                p.getDesignation(),
+                p.getPrixAchat(),
+                p.getCategorie(),
+                p.getTva(),
+                p.getRayon()
+            });
+        }
     }
 
     /**
@@ -29,7 +63,7 @@ public class produitsParRayonForm extends javax.swing.JInternalFrame {
 
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        listeProduits2 = new javax.swing.JTable();
+        listeProduitsParRayon = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         btnRechercheSalle = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -44,7 +78,7 @@ public class produitsParRayonForm extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des produits de ce rayon", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
 
-        listeProduits2.setModel(new javax.swing.table.DefaultTableModel(
+        listeProduitsParRayon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -52,7 +86,7 @@ public class produitsParRayonForm extends javax.swing.JInternalFrame {
                 "id", "Designation", "Prix d'achat", "Catégorie", "TVA", "Rayon"
             }
         ));
-        jScrollPane3.setViewportView(listeProduits2);
+        jScrollPane3.setViewportView(listeProduitsParRayon);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -146,7 +180,21 @@ public class produitsParRayonForm extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRechercheSalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechercheSalleActionPerformed
-       
+               
+      Rayon rayon = (Rayon) rayonList.getSelectedItem();
+       model.setRowCount(0);
+          for (Produit p:ps.findByRayon(rayon)) {
+            model.addRow(new Object[]{
+               p.getId(),
+                p.getDesignation(),
+                p.getPrixAchat(),
+                p.getCategorie(),
+                p.getTva(),
+                p.getRayon()
+            });
+        
+        }
+             
     }//GEN-LAST:event_btnRechercheSalleActionPerformed
 
     private void rayonListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rayonListActionPerformed
@@ -160,7 +208,7 @@ public class produitsParRayonForm extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable listeProduits2;
+    private javax.swing.JTable listeProduitsParRayon;
     private javax.swing.JComboBox rayonList;
     // End of variables declaration//GEN-END:variables
 }
