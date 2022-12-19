@@ -56,6 +56,28 @@ public class Fournisseur {
 		this.email = email;
 	}
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Fournisseur other = (Fournisseur) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
 	@Override
 	public String toString() {
 		return "Fournisseur : " + this.nom;

@@ -15,7 +15,7 @@ import java.util.List;
 public class CommandeService {
         private ClientService cls;
         
-       CommandeService(){
+       public CommandeService(){
            cls=new ClientService();
        }
 	
@@ -31,7 +31,6 @@ public class CommandeService {
 			e.printStackTrace();
 		}
 		return false;
-		
 	}
 
 	
@@ -63,6 +62,7 @@ public class CommandeService {
 			if (ps.executeUpdate() == 1)
 				return true;
 
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class CommandeService {
 	public Commande findById(int id) {
 			Commande commande= null;
         try {
-            String sql = "select * from commande where id = " + id;
+            String sql = "select * from commande where code = " + id;
             Statement st = connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {

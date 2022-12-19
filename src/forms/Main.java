@@ -5,10 +5,10 @@
  */
 package forms;
 
-import com.formdev.flatlaf.FlatLightLaf;
+//import com.formdev.flatlaf.FlatLightLaf;
 /**
  *
- * @author samih
+ * @author samiha
  */
 public class Main extends javax.swing.JFrame {
 
@@ -16,10 +16,10 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
-        initComponents();
+         initComponents();
          this.setTitle("Gestion des machines");
         this.setExtendedState(MAXIMIZED_BOTH);
-       FlatLightLaf.setup();
+    //   FlatLightLaf.setup();
     }
 
     /**

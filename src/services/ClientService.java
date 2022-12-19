@@ -19,7 +19,7 @@ public class ClientService implements IDao<Client> {
 	@Override
 	public boolean create(Client o) {
 		try {
-			String sql ="insert into client values(null ,'" + o.getNom() + "' ,'" + o.getNom()+ "' ,'" + o.getTelephone()	+"' ,'"+ o.getEmail() + "' ) ";
+			String sql ="insert into client values(null ,'" + o.getNom() + "'  ,'" + o.getTelephone()	+"' ,'"+ o.getEmail() + "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;

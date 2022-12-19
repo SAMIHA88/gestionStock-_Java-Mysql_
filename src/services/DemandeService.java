@@ -14,7 +14,7 @@ import java.util.List;
 public class DemandeService {
         private FournisseurService fs;
         
-       DemandeService(){
+       public DemandeService(){
            fs=new FournisseurService();
        }
 	
@@ -73,7 +73,7 @@ public class DemandeService {
 	public Demande findById(int id) {
 			Demande demande= null;
         try {
-            String sql = "select * from demande where id = " + id;
+            String sql = "select * from demande where code = " + id;
             Statement st = connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {

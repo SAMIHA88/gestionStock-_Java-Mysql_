@@ -8,17 +8,24 @@ import java.util.List;
 public class Demande {
 	private int code;
 	private Date date;
+        private  static int cmp;
 	private Fournisseur fournisseur;
-	//-----------
-	private List<LigneDemande> ligneDemandes;
-
+	
 	public Demande(int code, Date date, Fournisseur fournisseur) {
 		super();
 		this.code = code;
 		this.date = date;
 		this.fournisseur = fournisseur;
-		this.ligneDemandes = new ArrayList<LigneDemande>();
+		
 	}
+        public Demande(Date date, Fournisseur fournisseur) {
+		
+		this.code = ++cmp;
+		this.date = date;
+		this.fournisseur = fournisseur;
+		
+	}
+        
 
 	public int getCode() {
 		return code;
@@ -46,13 +53,6 @@ public class Demande {
 
 
 
-	public List<LigneDemande> getLigneDemandes() {
-		return ligneDemandes;
-	}
-
-	public void setLigneDemandes(List<LigneDemande> ligneDemandes) {
-		this.ligneDemandes = ligneDemandes;
-	}
 
 	@Override
 	public String toString() {

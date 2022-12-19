@@ -17,7 +17,7 @@ public class ProduitService implements IDao<Produit> {
         private CategorieService cs;
         private RayonService rys;
         
-       ProduitService(){
+       public ProduitService(){
            cs=new CategorieService();
        }
 	@Override

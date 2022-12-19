@@ -8,35 +8,24 @@ public class Rayon {
 	private int id;
 	private String code;
 	private static int cmp;
-	//------------
-	private List<Produit>produits;
 	
 	
 	
-	public Rayon(String code,List<Produit>produits) {
+	public Rayon(String code) {
 		this.id=++cmp;
 		this.code = code;
-		this.produits=new ArrayList<Produit>();
+		
 		
 	}
 
-	public Rayon(int id, String code, List<Produit> produits) {
+	public Rayon(int id, String code) {
 		this.id = id;
 		this.code = code;
-		this.produits = produits;
 	}
 
 
 
-	public List<Produit> getProduits() {
-		return produits;
-	}
-
-
-
-	public void setProduits(List<Produit> produits) {
-		this.produits = produits;
-	}
+	
 
 
 

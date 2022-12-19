@@ -9,7 +9,7 @@ public class connexion {
 	
 	private static String login="root";
 	private static String password="";
-	private static String url="jdbc::mysql://localhost:3306/gestion_stock";
+	private static String url="jdbc:mysql://localhost:3306/gestion_stock";
 	private static Connection connection;
 	
 	

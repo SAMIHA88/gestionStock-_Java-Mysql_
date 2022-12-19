@@ -5,19 +5,41 @@
  */
 package forms;
 
+import entities.Client;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import services.ClientService;
+
 /**
  *
  * @author samih
  */
 public class clientForm extends javax.swing.JInternalFrame {
-
+private static int id;
+    private ClientService cs;
+     private DefaultTableModel model;
     /**
      * Creates new form clientForm
      */
     public clientForm() {
         initComponents();
+   cs=new ClientService();
+     model = (DefaultTableModel) listeClients.getModel();
+        load();
     }
 
+    public void load (){
+        model.setRowCount(0);
+        for(Client c : cs.findAll()){
+            model.addRow(new Object[]{
+                c.getId(),
+                c.getNom(),
+                c.getTelephone(),
+                c.getEmail()
+            });
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,12 +51,10 @@ public class clientForm extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtTelephone = new javax.swing.JTextField();
-        txtId = new javax.swing.JTextField();
         txtNom = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         btnModifier = new javax.swing.JButton();
@@ -42,7 +62,7 @@ public class clientForm extends javax.swing.JInternalFrame {
         btnSupprimer = new javax.swing.JButton();
         ListClient = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableClients = new javax.swing.JTable();
+        listeClients = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -63,9 +83,6 @@ public class clientForm extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestion des clients");
-
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jLabel1.setText("id");
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel2.setText("Nom");
@@ -91,6 +108,11 @@ public class clientForm extends javax.swing.JInternalFrame {
         btnModifier.setBackground(new java.awt.Color(51, 153, 0));
         btnModifier.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnModifier.setText("Modifier");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
 
         btnAjouter.setBackground(new java.awt.Color(51, 102, 255));
         btnAjouter.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
@@ -104,11 +126,16 @@ public class clientForm extends javax.swing.JInternalFrame {
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 51));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         ListClient.setBackground(new java.awt.Color(255, 255, 255));
         ListClient.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des clients", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("MV Boli", 1, 18))); // NOI18N
 
-        tableClients.setModel(new javax.swing.table.DefaultTableModel(
+        listeClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -116,7 +143,12 @@ public class clientForm extends javax.swing.JInternalFrame {
                 "id", "nom", "Téléphone", "Email"
             }
         ));
-        jScrollPane2.setViewportView(tableClients);
+        listeClients.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listeClientsMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(listeClients);
 
         javax.swing.GroupLayout ListClientLayout = new javax.swing.GroupLayout(ListClient);
         ListClient.setLayout(ListClientLayout);
@@ -130,7 +162,7 @@ public class clientForm extends javax.swing.JInternalFrame {
         ListClientLayout.setVerticalGroup(
             ListClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ListClientLayout.createSequentialGroup()
-                .addGap(0, 7, Short.MAX_VALUE)
+                .addGap(0, 61, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -139,27 +171,28 @@ public class clientForm extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addComponent(jLabel4))
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel2)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSupprimer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnModifier, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAjouter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(28, 28, 28))
+                    .addComponent(btnAjouter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
             .addComponent(ListClient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -167,28 +200,19 @@ public class clientForm extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addGap(65, 65, 65)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(btnSupprimer)))
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(btnModifier)
-                        .addGap(36, 36, 36))
+                            .addComponent(jLabel2)
+                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)))
+                        .addContainerGap()
+                        .addComponent(btnSupprimer)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnModifier)
+                    .addComponent(txtTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAjouter)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -208,11 +232,48 @@ public class clientForm extends javax.swing.JInternalFrame {
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
+          String nom  = txtNom.getText();
+            String telephone  = txtTelephone.getText();
+              String email  = txtEmail.getText();
+        if(cs.create(new Client(nom,telephone,email))){
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            load();
+        }
     }//GEN-LAST:event_btnAjouterActionPerformed
 
     private void txtTelephoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelephoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelephoneActionPerformed
+
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+         if(id != 0){
+            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer ce client ? ");
+            if(reponse == 0){
+                cs.delete(cs.findById(id));
+                load();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+        }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        // TODO add your handling code here:
+            String nom  = txtNom.getText();
+            String telephone  = txtTelephone.getText();
+              String email  = txtEmail.getText();
+        if(cs.update(new Client(id, nom,telephone,email))){
+            JOptionPane.showMessageDialog(this, "Bien modifier");
+            load();
+    }//GEN-LAST:event_btnModifierActionPerformed
+    }
+    private void listeClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeClientsMouseClicked
+        // TODO add your handling code here:
+        id = Integer.parseInt(model.getValueAt(listeClients.getSelectedRow(), 0).toString());
+        txtNom.setText(model.getValueAt(listeClients.getSelectedRow(), 1).toString());
+        txtTelephone.setText(model.getValueAt(listeClients.getSelectedRow(), 2).toString());
+        txtEmail.setText(model.getValueAt(listeClients.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_listeClientsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -220,16 +281,14 @@ public class clientForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAjouter;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnSupprimer;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable tableClients;
+    private javax.swing.JTable listeClients;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNom;
     private javax.swing.JTextField txtTelephone;
     // End of variables declaration//GEN-END:variables

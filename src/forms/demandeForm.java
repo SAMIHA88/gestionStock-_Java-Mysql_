@@ -5,6 +5,14 @@
  */
 package forms;
 
+import entities.Fournisseur;
+import entities.Demande;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import services.FournisseurService;
+import services.DemandeService;
+
 /**
  *
  * @author samih
@@ -14,8 +22,34 @@ public class demandeForm extends javax.swing.JInternalFrame {
     /**
      * Creates new form demandeForm
      */
+     private static int code;
+    private FournisseurService fs;
+    private DemandeService dms;
+    private DefaultTableModel model;
+    
     public demandeForm() {
         initComponents();
+        fs=new FournisseurService();
+        dms=new DemandeService();
+        loadFournisseur();
+        model = (DefaultTableModel) listDemandes.getModel();
+        loadDemande();
+    }
+    private void loadDemande() {
+        model.setRowCount(0);
+        for (Demande d : dms.findAll()) {
+            model.addRow(new Object[]{
+               d.getCode(),
+                d.getDate(),
+                d.getFournisseur()
+            });
+        }
+    }
+
+    private void loadFournisseur() {
+        for (Fournisseur f : fs.findAll()) {
+            fournisseurList.addItem(f);
+        }
     }
 
     /**
@@ -28,10 +62,8 @@ public class demandeForm extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        txtCode = new javax.swing.JTextField();
         txtDate = new com.toedter.calendar.JDateChooser();
-        fournisseurList = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
+        fournisseurList = new javax.swing.JComboBox<Fournisseur>();
         jLabel2 = new javax.swing.JLabel();
         btnSupprimer = new javax.swing.JButton();
         btnModifier = new javax.swing.JButton();
@@ -49,15 +81,11 @@ public class demandeForm extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel3.setText("Fournisseur:");
 
-        fournisseurList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         fournisseurList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fournisseurListActionPerformed(evt);
             }
         });
-
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jLabel1.setText("Code:");
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel2.setText("Date:");
@@ -65,10 +93,20 @@ public class demandeForm extends javax.swing.JInternalFrame {
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 51));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         btnModifier.setBackground(new java.awt.Color(51, 153, 0));
         btnModifier.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnModifier.setText("Modifier");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
 
         btnAjouter.setBackground(new java.awt.Color(51, 102, 255));
         btnAjouter.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
@@ -90,6 +128,11 @@ public class demandeForm extends javax.swing.JInternalFrame {
                 "Code", "Date", "Fournisseur"
             }
         ));
+        listDemandes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listDemandesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listDemandes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -117,21 +160,19 @@ public class demandeForm extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fournisseurList, 0, 143, Short.MAX_VALUE)
-                            .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCode))
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fournisseurList, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnSupprimer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnModifier, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAjouter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(64, 64, 64)
+                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -139,16 +180,12 @@ public class demandeForm extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                        .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(fournisseurList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -160,7 +197,7 @@ public class demandeForm extends javax.swing.JInternalFrame {
                         .addComponent(btnAjouter)))
                 .addGap(38, 38, 38)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -168,25 +205,59 @@ public class demandeForm extends javax.swing.JInternalFrame {
 
     private void fournisseurListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fournisseurListActionPerformed
         // TODO add your handling code here:
+         
     }//GEN-LAST:event_fournisseurListActionPerformed
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
+         Date date = txtDate.getDate();
+        Fournisseur fournisseur = (Fournisseur) fournisseurList.getSelectedItem();
+        if (dms.create(new Demande(date,fournisseur))) {
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            loadDemande();
+        }
     }//GEN-LAST:event_btnAjouterActionPerformed
 
+    private void listDemandesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listDemandesMouseClicked
+        // TODO add your handling code here:
+        code=Integer.parseInt( model.getValueAt(listDemandes.getSelectedRow(),0).toString());
+       
+          txtDate.setDate((Date)model.getValueAt(listDemandes.getSelectedRow(),1));
+         fournisseurList.setSelectedItem((Fournisseur)model.getValueAt(listDemandes.getSelectedRow(),2));
+    }//GEN-LAST:event_listDemandesMouseClicked
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        // TODO add your handling code here:
+         Date date = txtDate.getDate();
+        Fournisseur fournisseur = (Fournisseur) fournisseurList.getSelectedItem();
+        if(dms.update(new Demande(code,date,fournisseur))){
+            JOptionPane.showMessageDialog(this, "Bien modifié");
+            loadDemande();
+    }//GEN-LAST:event_btnModifierActionPerformed
+    }
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+         if(code != 0){
+            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette demande ? ");
+            if(reponse == 0){
+                dms.delete(dms.findById(code));
+                loadDemande();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+         }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAjouter;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnSupprimer;
-    private javax.swing.JComboBox fournisseurList;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<Fournisseur> fournisseurList;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listDemandes;
-    private javax.swing.JTextField txtCode;
     private com.toedter.calendar.JDateChooser txtDate;
     // End of variables declaration//GEN-END:variables
 }

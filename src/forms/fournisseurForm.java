@@ -5,6 +5,12 @@
  */
 package forms;
 
+import entities.Fournisseur;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import services.FournisseurService;
+
 /**
  *
  * @author samih
@@ -14,8 +20,26 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
     /**
      * Creates new form fournisseurForm
      */
+    private static int id;
+    private FournisseurService fs;
+     private DefaultTableModel model;
     public fournisseurForm() {
         initComponents();
+   fs=new FournisseurService();
+     model = (DefaultTableModel) listeFournisseurs.getModel();
+        load();
+    }
+
+    public void load (){
+        model.setRowCount(0);
+        for(Fournisseur f : fs.findAll()){
+            model.addRow(new Object[]{
+                f.getId(),
+                f.getNom(),
+                f.getTelephone(),
+                f.getEmail()
+            });
+        }
     }
 
     /**
@@ -27,11 +51,9 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
         txtNom = new javax.swing.JTextField();
         txtTelephone = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
@@ -49,9 +71,6 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
         setTitle("Gestion des fournisseurs");
         setOpaque(true);
 
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jLabel1.setText("Id:");
-
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel2.setText("Téléphone:");
 
@@ -60,12 +79,6 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel4.setText("Email:");
-
-        txtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdActionPerformed(evt);
-            }
-        });
 
         txtTelephone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +107,11 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 0));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des fournisseurs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
@@ -106,6 +124,11 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
                 "Id", "Nom", "Téléphone", "Email"
             }
         ));
+        listeFournisseurs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listeFournisseursMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listeFournisseurs);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -136,13 +159,11 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNom, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                             .addComponent(txtTelephone)
-                            .addComponent(txtId)
                             .addComponent(txtEmail))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -161,11 +182,7 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -184,15 +201,11 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
                     .addComponent(btnModifier))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdActionPerformed
 
     private void txtTelephoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelephoneActionPerformed
         // TODO add your handling code here:
@@ -200,18 +213,51 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
+          String nom  = txtNom.getText();
+            String telephone  = txtTelephone.getText();
+              String email  = txtEmail.getText();
+         if(fs.create(new Fournisseur( nom,telephone,email))){
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            load();
+        }
     }//GEN-LAST:event_btnAjouterActionPerformed
 
     private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
         // TODO add your handling code here:
+         String nom  = txtNom.getText();
+            String telephone  = txtTelephone.getText();
+              String email  = txtEmail.getText();
+        if(fs.update(new Fournisseur(id, nom,telephone,email))){
+            JOptionPane.showMessageDialog(this, "Bien modifier");
+            load();
+    }                            
     }//GEN-LAST:event_btnModifierActionPerformed
+
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+         if(id != 0){
+            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer ce fournisseur ? ");
+            if(reponse == 0){
+                fs.delete(fs.findById(id));
+                load();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+        }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
+    private void listeFournisseursMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeFournisseursMouseClicked
+        // TODO add your handling code here:
+         id = Integer.parseInt(model.getValueAt(listeFournisseurs.getSelectedRow(), 0).toString());
+        txtNom.setText(model.getValueAt(listeFournisseurs.getSelectedRow(), 1).toString());
+        txtTelephone.setText(model.getValueAt(listeFournisseurs.getSelectedRow(), 2).toString());
+        txtEmail.setText(model.getValueAt(listeFournisseurs.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_listeFournisseursMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAjouter;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnSupprimer;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -219,7 +265,6 @@ public class fournisseurForm extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listeFournisseurs;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNom;
     private javax.swing.JTextField txtTelephone;
     // End of variables declaration//GEN-END:variables

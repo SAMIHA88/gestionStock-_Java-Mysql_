@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.IDao;
-import entities.Produit;
 import entities.Rayon;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +14,13 @@ import java.sql.Statement;
 public class RayonService implements IDao<Rayon>{
 	 private ProduitService ps;
         
-       RayonService(){
+       public RayonService(){
            ps=new ProduitService();
        }
 	@Override
 	public boolean create(Rayon o) {
 		try {
-			String sql ="insert into rayon values(null ,'" + o.getCode()+ "' ,'" + o.getProduits()+  "' ) ";
+			String sql ="insert into rayon values(null ,'" + o.getCode()+  "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;
@@ -55,11 +54,11 @@ public class RayonService implements IDao<Rayon>{
 	@Override
 	public boolean update(Rayon o) {
          try {
-			String req = "update produit set code = ? , produits = ? where id = ?";
+			String req = "update rayon set code = ?  where id = ?";
 			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
 			ps.setString(1, o.getCode());
 			//ps.setInt(2, o.getProduits().get());
-			ps.setInt(3, o.getId());
+			ps.setInt(2, o.getId());
 			
 			if (ps.executeUpdate() == 1)
 				return true;
@@ -78,9 +77,9 @@ public class RayonService implements IDao<Rayon>{
             String sql = "select * from rayon where id = " + id;
             Statement st = connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
-            //if (rs.next()) {
-            //    return new Rayon(rs.getInt("id"), rs.getString("code"),ps.findById(rs.getInt("produits")));
-            //}
+            if (rs.next()) {
+                return new Rayon(rs.getInt("id"),rs.getString("code"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,7 +94,7 @@ public class RayonService implements IDao<Rayon>{
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				//rayons.add(new new Rayon(rs.getInt("id"), rs.getString("code"),ps.findById(rs.getInt("produits"))));
+				rayons.add(new  Rayon(rs.getInt("id"), rs.getString("code")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

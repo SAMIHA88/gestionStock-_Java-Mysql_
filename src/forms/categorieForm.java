@@ -5,6 +5,11 @@
  */
 package forms;
 
+import entities.Categorie;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import services.CategorieService;
+
 /**
  *
  * @author samih
@@ -14,10 +19,25 @@ public class categorieForm extends javax.swing.JInternalFrame {
     /**
      * Creates new form categorieForm
      */
+    private static int id;
+    private CategorieService cs;
+     private DefaultTableModel model;
     public categorieForm() {
         initComponents();
+        cs=new CategorieService();
+     model = (DefaultTableModel) listeCategories.getModel();
+        load();
     }
 
+    public void load (){
+        model.setRowCount(0);
+        for(Categorie c : cs.findAll()){
+            model.addRow(new Object[]{
+                c.getId(),
+                c.getLibelle()
+            });
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,9 +47,7 @@ public class categorieForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
         txtLibelle = new javax.swing.JTextField();
         btnAjouter = new javax.swing.JButton();
         btnSupprimer = new javax.swing.JButton();
@@ -44,9 +62,6 @@ public class categorieForm extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Gestion des categories");
 
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jLabel1.setText("id:");
-
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel2.setText("Libelle:");
 
@@ -59,14 +74,29 @@ public class categorieForm extends javax.swing.JInternalFrame {
         btnAjouter.setBackground(new java.awt.Color(0, 51, 255));
         btnAjouter.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnAjouter.setText("Ajouter");
+        btnAjouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjouterActionPerformed(evt);
+            }
+        });
 
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 51));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         btnModifier.setBackground(new java.awt.Color(0, 153, 0));
         btnModifier.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnModifier.setText("Modifier");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
 
         pan.setBackground(new java.awt.Color(255, 255, 255));
         pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Les informations des categories", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tempus Sans ITC", 1, 14))); // NOI18N
@@ -79,6 +109,11 @@ public class categorieForm extends javax.swing.JInternalFrame {
                 "id", "libelle"
             }
         ));
+        listeCategories.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listeCategoriesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listeCategories);
 
         javax.swing.GroupLayout panLayout = new javax.swing.GroupLayout(pan);
@@ -93,7 +128,7 @@ public class categorieForm extends javax.swing.JInternalFrame {
             panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -103,38 +138,32 @@ public class categorieForm extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(67, 67, 67)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAjouter)
                         .addGap(44, 44, 44)
                         .addComponent(btnSupprimer)
                         .addGap(50, 50, 50)
-                        .addComponent(btnModifier)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnModifier)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jLabel2)
+                .addGap(39, 39, 39)
+                .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                    .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAjouter)
                     .addComponent(btnSupprimer)
@@ -151,17 +180,52 @@ public class categorieForm extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLibelleActionPerformed
 
+    private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
+        // TODO add your handling code here:
+          
+        String libelle  = txtLibelle.getText();
+        if(cs.create(new Categorie(libelle))){
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            load();
+        }
+    }//GEN-LAST:event_btnAjouterActionPerformed
+
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+        if(id != 0){
+            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette catégorie ? ");
+            if(reponse == 0){
+                cs.delete(cs.findById(id));
+                load();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+        }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        // TODO add your handling code here:
+         
+        String libelle  = txtLibelle.getText();
+        if(cs.update(new Categorie(id,  libelle))){
+            JOptionPane.showMessageDialog(this, "Bien modifier");
+            load();
+    }//GEN-LAST:event_btnModifierActionPerformed
+    }
+    private void listeCategoriesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeCategoriesMouseClicked
+        // TODO add your handling code here:
+         id = Integer.parseInt(model.getValueAt(listeCategories.getSelectedRow(), 0).toString());
+        txtLibelle.setText(model.getValueAt(listeCategories.getSelectedRow(), 1).toString());
+    }//GEN-LAST:event_listeCategoriesMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAjouter;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnSupprimer;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listeCategories;
     private javax.swing.JPanel pan;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtLibelle;
     // End of variables declaration//GEN-END:variables
 }

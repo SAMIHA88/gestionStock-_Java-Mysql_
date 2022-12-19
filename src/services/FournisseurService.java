@@ -16,7 +16,7 @@ public class FournisseurService implements IDao<Fournisseur> {
 		public boolean create(Fournisseur o) {
 			// TODO Auto-generated method stub
 			try {
-				String sql ="insert into fournisseur  values(null ,'" + o.getNom() + "' ,'" + o.getNom()+ "' ,'" + o.getTelephone()	+"' ,'"+ o.getEmail() + "' ) ";
+				String sql ="insert into fournisseur  values(null ,'" + o.getNom()+ "' ,'" + o.getTelephone()	+"' ,'"+ o.getEmail() + "' ) ";
 				Statement st = connexion.getConnection().createStatement();
 				if(st.executeUpdate(sql)==1) {
 					
@@ -32,7 +32,7 @@ public class FournisseurService implements IDao<Fournisseur> {
 		public boolean update(Fournisseur o) {
 			// TODO Auto-generated method stub
 			try {
-				String sql ="delete from fournisseur where id= "+o.getId();
+				String sql ="update fournisseur set nom='" + o.getNom() + "' ,telephone='" + o.getTelephone()+ "' ,email='" + o.getEmail() + "' where id="+o.getId();
 				Statement st = connexion.getConnection().createStatement();
 				if(st.executeUpdate(sql)==1) {
 					return true;
