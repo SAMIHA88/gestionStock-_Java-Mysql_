@@ -47,9 +47,6 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
 
-        produitList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        demandeList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         demandeList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 demandeListActionPerformed(evt);

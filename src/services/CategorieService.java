@@ -67,7 +67,7 @@ public class CategorieService implements IDao<Categorie>{
 
     @Override
     public Categorie findById(int id) {
-    Categorie categorie = null;
+    
 		try {
 			String sql="select * from categorie where id=" + id ;
 			Statement st = connexion.getConnection().createStatement();

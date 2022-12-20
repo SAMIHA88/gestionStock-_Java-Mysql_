@@ -72,7 +72,7 @@ public class RayonService implements IDao<Rayon>{
 
 	@Override
 	public Rayon findById(int id) {
-			Rayon rayon= null;
+			
         try {
             String sql = "select * from rayon where id = " + id;
             Statement st = connexion.getConnection().createStatement();

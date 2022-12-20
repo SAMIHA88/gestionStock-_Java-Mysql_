@@ -46,6 +46,8 @@ public class ProduitForm extends javax.swing.JInternalFrame {
                 p.getId(),
                 p.getDesignation(),
                 p.getPrixAchat(),
+                p.getCategorie(),
+                p.getTva(),
                 p.getRayon()
             });
         }
@@ -287,9 +289,9 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
               
         String designation = txtDesignation.getText();
-        Double prixAchat = Double.parseDouble(txtPrixAchat.getText());
+        double prixAchat = Double.parseDouble(txtPrixAchat.getText());
         Categorie categorie = (Categorie) categorieList.getSelectedItem();
-        Double tva=Double.parseDouble(txtTva.getText());
+        double  tva=Double.parseDouble(txtTva.getText());
         Rayon rayon=(Rayon) rayonList.getSelectedItem();
         if (ps.create(new Produit(designation, prixAchat, categorie, tva, rayon))) {
             JOptionPane.showMessageDialog(this, "Bien ajouté");

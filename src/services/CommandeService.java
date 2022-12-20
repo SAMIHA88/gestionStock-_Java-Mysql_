@@ -3,6 +3,8 @@ package services;
 import connexion.connexion;
 import entities.Client;
 import entities.Commande;
+import entities.Fournisseur;
+import entities.Produit;
 import entities.Demande;
 import entities.Fournisseur;
 import entities.Produit;
@@ -23,7 +25,7 @@ public class CommandeService {
 	
 	public boolean create(Commande o) {
 		try {
-			String sql ="insert into commande values(null ,'" + o.getDate()+ "' ,'" + o.getClient().getId()+ "' ) ";
+			String sql ="insert into commande values(null ,'" + new Date(o.getDate().getTime())+ "' ,'" + o.getClient().getId()+ "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;

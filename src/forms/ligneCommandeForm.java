@@ -5,11 +5,14 @@
  */
 package forms;
 
+import entities.Client;
 import entities.Commande;
 import entities.Produit;
 import entities.LigneCommande;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import services.CommandeService;
+import services.LigneCommandeService;
 import services.ProduitService;
 
 /**
@@ -17,9 +20,10 @@ import services.ProduitService;
  * @author samih
  */
 public class ligneCommandeForm extends javax.swing.JInternalFrame {
-      private static int code;
+    
     private ProduitService ps;
     private CommandeService cms;
+    private LigneCommandeService lcs; 
     private DefaultTableModel model;
     /**
      * Creates new form ligneCommandeForm
@@ -35,19 +39,25 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
     }
     private void loadLigneCommande() {
         model.setRowCount(0);
-        for (LigneCommande lc: cms.findAll()) {
+        for (LigneCommande lc: lcs.findAll()) {
             model.addRow(new Object[]{
-               lc.getCode(),
-                lc.getDate(),
-                lc.getClient()
+              lc.getCommande(),
+                lc.getProduit(),
+                 lc.getQuantite(),
+                lc.getPrixVente()
+               
             });
         }
     }
 
-    private void loadClient() {
-        for (Client c : cs.findAll()) {
-            clientList.addItem(c);
-        }
+    private void loadCommande() {
+        for (Commande c : cms.findAll()) {
+           commandeList.addItem(c);
+       }
+    }private void loadProduit() {
+        for (Produit p : ps.findAll()) {
+           produitList.addItem(p);
+       }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +100,11 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
         btnAjouter.setBackground(new java.awt.Color(0, 51, 255));
         btnAjouter.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnAjouter.setText("Ajouter");
+        btnAjouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjouterActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel4.setText("Prix de Vente:");
@@ -97,6 +112,11 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 51));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         txtQuantite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,6 +148,11 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
                 "Demande", "Produit", "Quantité", "Prix d'Achat"
             }
         ));
+        listeLigneCommandes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listeLigneCommandesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listeLigneCommandes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -150,6 +175,11 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
         btnModifier.setBackground(new java.awt.Color(0, 153, 0));
         btnModifier.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnModifier.setText("Modifier");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -229,6 +259,50 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
     private void txtPrixVenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrixVenteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrixVenteActionPerformed
+
+    private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
+        // TODO add your handling code here:
+         Commande commande = (Commande) commandeList.getSelectedItem();
+          Produit produit = (Produit) produitList.getSelectedItem();
+          int quantite  = Integer.parseInt(txtQuantite.getText());
+            double prixVente  = Double.parseDouble(txtPrixVente.getText());
+        if (lcs.create(new LigneCommande(commande,produit,quantite,prixVente))) {
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            loadCommande();
+        }
+    }//GEN-LAST:event_btnAjouterActionPerformed
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        // TODO add your handling code here:
+        Commande commande = (Commande) commandeList.getSelectedItem();
+          Produit produit = (Produit) produitList.getSelectedItem();
+          int quantite  = Integer.parseInt(txtQuantite.getText());
+            double prixVente  = Double.parseDouble(txtPrixVente.getText());
+       if (lcs.update(new LigneCommande(commande,produit,quantite,prixVente))) {
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            loadCommande();
+        }    
+    }//GEN-LAST:event_btnModifierActionPerformed
+
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+         
+            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de commande ? ");
+            if(reponse == 0){
+                lcs.delete(lcs.findById(commande,produit));
+                loadCommande();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+      
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+static Commande commande;
+static Produit produit;
+    private void listeLigneCommandesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeLigneCommandesMouseClicked
+        // TODO add your handling code here:
+        commande= (Commande)model.getValueAt(listeLigneCommandes.getSelectedRow(),0);
+       produit= (Produit)model.getValueAt(listeLigneCommandes.getSelectedRow(),1);
+          
+    }//GEN-LAST:event_listeLigneCommandesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -314,9 +314,9 @@ public class Main extends javax.swing.JFrame {
 
     private void produitFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitFormActionPerformed
         // TODO add your handling code here:
-        ProduitForm pf=new ProduitForm();
-         desktopPane.add(pf);
-        pf.setVisible(true);
+        ProduitForm ff=new ProduitForm();
+         desktopPane.add(ff);
+        ff.setVisible(true);
     }//GEN-LAST:event_produitFormActionPerformed
 
     private void produitParCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitParCategorieActionPerformed

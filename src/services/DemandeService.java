@@ -20,7 +20,7 @@ public class DemandeService {
 	
 	public boolean create(Demande o) {
 		try {
-			String sql ="insert into demande values(null ,'" + o.getDate()+ "' ,'" + o.getFournisseur().getId()+ "' ) ";
+			String sql ="insert into demande values(null ,'" + new Date(o.getDate().getTime())+ "' ,'" + o.getFournisseur().getId()+ "' ) ";
 			Statement st = connexion.getConnection().createStatement();
 			if(st.executeUpdate(sql)==1) {
 				return true;

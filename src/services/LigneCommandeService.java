@@ -17,9 +17,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import connexion.connexion;
 import entities.LigneCommande;
+import connexion.connexion;
+import entities.Commande;
+import entities.Produit;
 
 public class LigneCommandeService {
 
@@ -70,16 +71,14 @@ public class LigneCommandeService {
 	}
 
 	
-	public boolean update(LigneCommande o, LigneCommande o1) {
+	public boolean update(LigneCommande o) {
 		try {
-			String req = "update lignecommande set commande = ? , produit = ?, quantite = ?, prixVente = ? where commande = ? and produit = ?";
+			String req = "update lignecommande set  quantite = ?, prixVente = ? where commande = ? and produit = ?";
 			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
-			ps.setInt(1, o1.getCommande().getCode());
-			ps.setInt(2, o1.getProduit().getId());
-			ps.setInt(3, o1.getQuantite());
-                        ps.setDouble(4, o1.getPrixVente());
-			ps.setInt(5, o.getCommande().getCode());
-                        ps.setInt(6, o.getProduit().getId());
+			ps.setInt(1, o.getQuantite());
+                        ps.setDouble(2, o.getPrixVente());
+			ps.setInt(3, o.getCommande().getCode());
+                        ps.setInt(4, o.getProduit().getId());
 			if (ps.executeUpdate() == 1)
 				return true;
 
@@ -91,12 +90,12 @@ public class LigneCommandeService {
 	}
 
 	
-	public LigneCommande findById(int commande, int produit) {
+	public LigneCommande findById(Commande commande, Produit produit) {
 		try {
 			String sql = "select * from lignecommande where commande = ? and produit = ?";
 			PreparedStatement st = connexion.getConnection().prepareStatement(sql);
-			st.setInt(1, commande);
-                        st.setInt(2, produit);
+			st.setInt(1, commande.getCode());
+                        st.setInt(2, produit.getId());
 			ResultSet rs = st.executeQuery();
 			if(rs.next()) {
 				return new LigneCommande(cs.findById(rs.getInt("commande")),
@@ -116,14 +115,15 @@ public class LigneCommandeService {
 			ResultSet rs = st.executeQuery(sql);
 			
 			while (rs.next())
-				lignesCommandes.add(new LigneCommande(
-						cs.findById(rs.getInt("commande")), pp.findById(rs.getInt("produit")),
-						rs.getInt("quantite"), rs.getDouble("prixVente")));
+				lignesCommandes.add(new LigneCommande(cs.findById(rs.getInt("commande")), pp.findById(rs.getInt("produit")),rs.getInt("quantite"), rs.getDouble("prixVente")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return lignesCommandes;
 	}
+        void suffisance(){
+            
+        }
 
 }
 

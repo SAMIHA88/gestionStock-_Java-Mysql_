@@ -92,19 +92,22 @@ public class ProduitService implements IDao<Produit> {
 
 	@Override
 	public List<Produit> findAll() {
-		List<Produit> produits = new ArrayList<Produit>();
+		List<Produit> produits;
 		try {
-			String sql="select * from produit ";
+                        produits=new ArrayList<Produit>();
+			String sql="select * from produit";
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
 				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
 			}
+                        return produits;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+                        System.out.println(e.getMessage());
 		}
-		return produits;
+		return null;
 	}
 
         public List<Produit> findByRayon(Rayon r) {
