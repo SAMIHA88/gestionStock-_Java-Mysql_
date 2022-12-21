@@ -17,7 +17,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
          initComponents();
-         this.setTitle("Gestion des machines");
+         this.setTitle("Gestion des stocks");
         this.setExtendedState(MAXIMIZED_BOTH);
     //   FlatLightLaf.setup();
     }

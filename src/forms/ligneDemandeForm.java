@@ -88,6 +88,7 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Gestion des lignes de demandes");
 
         demandeList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,7 +129,7 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Commande", "Produit", "Quantité", "Prix d'Achat"
+                "Demande", "Produit", "Quantité", "Prix d'Achat"
             }
         ));
         listeLigneDemandes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -287,7 +288,7 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
 
     private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
         // TODO add your handling code here:
-        int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de commande ? ");
+        int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de demande ? ");
             if(reponse == 0){
                 lds.delete(lds.findById(demande,produit));
                 loadDemande();

@@ -5,6 +5,7 @@
  */
 package forms;
 
+import connexion.connexion;
 import javax.swing.table.DefaultTableModel;
 import services.CategorieService;
 import services.ProduitService;
@@ -12,6 +13,9 @@ import services.RayonService;
 import entities.Produit;
 import entities.Categorie;
 import entities.Rayon;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import javax.swing.JOptionPane;
 /**
@@ -48,7 +52,8 @@ public class ProduitForm extends javax.swing.JInternalFrame {
                 p.getPrixAchat(),
                 p.getCategorie(),
                 p.getTva(),
-                p.getRayon()
+                p.getRayon(),
+                p.getQuantite()
             });
         }
     }
@@ -193,7 +198,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -337,7 +342,8 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         double tva=Double.parseDouble(txtTva.getText());
         Rayon rayon=(Rayon) rayonList.getSelectedItem();
         int quantite= Integer.parseInt(txtQuantite.getText());
-        if(ps.update(new Produit( designation, categorie, prixAchat, tva, quantite,  rayon))){
+        
+        if(ps.update(new Produit( id,designation, categorie, prixAchat, tva, quantite,  rayon))){
             JOptionPane.showMessageDialog(this, "Bien modifié");
             loadProduits();
     }//GEN-LAST:event_btnModifyActionPerformed
@@ -364,14 +370,18 @@ public class ProduitForm extends javax.swing.JInternalFrame {
 
     private void listProduitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listProduitMouseClicked
         // TODO add your handling code here:
-          id=Integer.parseInt( model.getValueAt(listProduit.getSelectedRow(),0).toString());
-          String designation;
-        designation = model.getValueAt(listProduit.getSelectedRow(),1).toString();
-          double txtPrixAchat=Double.parseDouble( model.getValueAt(listProduit.getSelectedRow(),2).toString());
-       categorieList.setSelectedItem((Categorie)model.getValueAt(listProduit.getSelectedRow(),3));
-       double txtTva=Double.parseDouble( model.getValueAt(listProduit.getSelectedRow(),4).toString());
-          rayonList.setSelectedItem((Rayon)model.getValueAt(listProduit.getSelectedRow(),5));
-          int quantite=Integer.parseInt( model.getValueAt(listProduit.getSelectedRow(),6).toString());
+       
+        
+          id=Integer.parseInt( model.getValueAt(listProduit.getSelectedRow(),0).toString()); 
+          txtDesignation.setText(model.getValueAt(listProduit.getSelectedRow(), 1).toString());
+          txtPrixAchat.setText(model.getValueAt(listProduit.getSelectedRow(), 2).toString());
+          categorieList.setSelectedItem((Categorie)model.getValueAt(listProduit.getSelectedRow(),3));
+           txtTva.setText(model.getValueAt(listProduit.getSelectedRow(), 4).toString());
+           rayonList.setSelectedItem((Rayon)model.getValueAt(listProduit.getSelectedRow(),5));
+          txtQuantite.setText(model.getValueAt(listProduit.getSelectedRow(), 6).toString());
+          
+        
+          
     }//GEN-LAST:event_listProduitMouseClicked
 
 

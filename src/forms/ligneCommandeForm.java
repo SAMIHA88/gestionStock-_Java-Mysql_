@@ -31,35 +31,40 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
      */
     public ligneCommandeForm() {
         initComponents();
-        ps=new ProduitService();
-        loadProduit();
-         cms=new CommandeService();
-         loadCommande();
-        model = (DefaultTableModel) listeLigneCommandes.getModel();
-        loadLigneCommande();
+           cms = new CommandeService();
+           loadCommande();
+            ps = new ProduitService();
+            loadProduit();
+     model = (DefaultTableModel) listeLigneCommandes.getModel();
+        load();
     }
-    private void loadLigneCommande() {
-        model.setRowCount(0);
-        for (LigneCommande lc: lcs.findAll()) {
-            model.addRow(new Object[]{
-              lc.getCommande(),
-                lc.getProduit(),
-                 lc.getQuantite(),
-                lc.getPrixVente()
-               
-            });
-        }
-    }
-
-    private void loadCommande() {
+       private void loadCommande() {
         for (Commande c : cms.findAll()) {
            commandeList.addItem(c);
        }
-    }private void loadProduit() {
+     }
+        private void loadProduit() {
         for (Produit p : ps.findAll()) {
            produitList.addItem(p);
        }
     }
+
+    public void load (){
+        model.setRowCount(0);
+        for(LigneCommande lc : lcs.findAll()){
+            model.addRow(new Object[]{
+                lc.getCommande().getCode(),
+                lc.getProduit().getId(),
+                lc.getQuantite(),
+                lc.getPrixVente()
+            });
+        }
+            
+    
+   
+
+    }
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,7 +215,7 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
                         .addComponent(btnAjouter)
                         .addGap(44, 44, 44)
                         .addComponent(btnSupprimer)
-                        .addGap(50, 50, 50)
+                        .addGap(47, 47, 47)
                         .addComponent(btnModifier))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -236,14 +241,18 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtPrixVente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAjouter)
-                    .addComponent(btnSupprimer)
-                    .addComponent(btnModifier))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAjouter)
+                            .addComponent(btnSupprimer)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(btnModifier)))
                 .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -259,50 +268,60 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
 
     private void txtPrixVenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrixVenteActionPerformed
         // TODO add your handling code here:
+            Commande commande = (Commande) commandeList.getSelectedItem();
+          Produit produit = (Produit) produitList.getSelectedItem();
+          int quantite  = Integer.parseInt(txtQuantite.getText());
+            double prixAchat  = Double.parseDouble(txtPrixVente.getText());
+       if (lcs.update(new LigneCommande(commande,produit,quantite,prixAchat))) {
+            JOptionPane.showMessageDialog(this, "Bien modifié");
+            loadCommande();
+        } 
     }//GEN-LAST:event_txtPrixVenteActionPerformed
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
-         Commande commande = (Commande) commandeList.getSelectedItem();
-          Produit produit = (Produit) produitList.getSelectedItem();
-          int quantite  = Integer.parseInt(txtQuantite.getText());
-            double prixVente  = Double.parseDouble(txtPrixVente.getText());
-        if (lcs.create(new LigneCommande(commande,produit,quantite,prixVente))) {
+        Commande commande = (Commande) commandeList.getSelectedItem();
+        Produit produit = (Produit) produitList.getSelectedItem();
+        double prixVente = Double.parseDouble(txtPrixVente.getText());
+        int quantite=Integer.parseInt(txtQuantite.getText());
+        if (lcs.create(new LigneCommande(commande, produit,quantite, prixVente))) {
             JOptionPane.showMessageDialog(this, "Bien ajouté");
-            loadCommande();
+            load();
+        
         }
     }//GEN-LAST:event_btnAjouterActionPerformed
 
     private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
         // TODO add your handling code here:
-        Commande commande = (Commande) commandeList.getSelectedItem();
+  Commande demande = (Commande) commandeList.getSelectedItem();
           Produit produit = (Produit) produitList.getSelectedItem();
           int quantite  = Integer.parseInt(txtQuantite.getText());
-            double prixVente  = Double.parseDouble(txtPrixVente.getText());
-       if (lcs.update(new LigneCommande(commande,produit,quantite,prixVente))) {
+            double prixAchat  = Double.parseDouble(txtPrixVente.getText());
+       if (lcs.update(new LigneCommande(demande,produit,quantite,prixAchat))) {
             JOptionPane.showMessageDialog(this, "Bien modifié");
             loadCommande();
         }    
+        
     }//GEN-LAST:event_btnModifierActionPerformed
 
     private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
         // TODO add your handling code here:
-         
-            int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de commande ? ");
+          int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de commande ? ");
             if(reponse == 0){
                 lcs.delete(lcs.findById(commande,produit));
                 loadCommande();
                 JOptionPane.showMessageDialog(this, "Bien supprimé");
             }
+          
       
     }//GEN-LAST:event_btnSupprimerActionPerformed
 
     private void listeLigneCommandesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeLigneCommandesMouseClicked
         // TODO add your handling code here:
-        commande= (Commande)model.getValueAt(listeLigneCommandes.getSelectedRow(),0);
+commande= (Commande)model.getValueAt(listeLigneCommandes.getSelectedRow(),0);
        produit= (Produit)model.getValueAt(listeLigneCommandes.getSelectedRow(),1);
-          int quantite=Integer.parseInt( model.getValueAt(listeLigneCommandes.getSelectedRow(),2).toString());
-        double prixVente=Double.parseDouble( model.getValueAt(listeLigneCommandes.getSelectedRow(),3).toString());
+        int quantite=Integer.parseInt( model.getValueAt(listeLigneCommandes.getSelectedRow(),2).toString());
+        double prixAchat=Double.parseDouble( model.getValueAt(listeLigneCommandes.getSelectedRow(),3).toString());
     }//GEN-LAST:event_listeLigneCommandesMouseClicked
 
 

@@ -25,28 +25,32 @@ import entities.Produit;
 public class LigneDemandeService {
 
 	DemandeService ds;
-	ProduitService pp;
+	ProduitService ps;
 	
 	
 	
 	public LigneDemandeService() {
 		ds = new DemandeService();
-		pp = new ProduitService();
+		ps = new ProduitService();
 	}
 
 	
 	public boolean create(LigneDemande o) {
-		try {
-			String req = "insert into lignedemande values (?, ? , ?, ?)";
-			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
-			ps.setInt(1, o.getDemande().getCode());
-			ps.setInt(2, o.getProduit().getId());
-			ps.setInt(3, o.getQuantite());
-			ps.setDouble(4, o.getPrixAchat());
-                        
-			if (ps.executeUpdate() == 1)
+			try {
+			String sql = "insert into lignedemande values("+ o.getProduit().getId() + "," + o.getDemande().getCode()
+					+ "," + o.getQuantite() + ")";
+			Produit p=ps.findById(o.getProduit().getId());
+			if(p!=null)
+			{
+			p.quantite=p.quantite+o.getQuantite();
+			String sql2="update produit set quantite="+p.quantite +" where id="+o.getProduit().getId();
+			Statement st2=connexion.getConnection().createStatement();
+			st2.executeUpdate(sql2);
+			}
+			Statement st = connexion.getConnection().createStatement();
+			if (st.executeUpdate(sql) == 1) {
 				return true;
-
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,7 +103,7 @@ public class LigneDemandeService {
 			ResultSet rs = st.executeQuery();
 			if(rs.next()) {
 				return new LigneDemande(ds.findById(rs.getInt("demande")),
-						pp.findById(rs.getInt("produit")), rs.getInt("quantite"), rs.getDouble("prixAchat"));
+						ps.findById(rs.getInt("produit")), rs.getInt("quantite"), rs.getDouble("prixAchat"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,13 +120,15 @@ public class LigneDemandeService {
 			
 			while (rs.next())
 				lignesDemandes.add(new LigneDemande(
-						ds.findById(rs.getInt("demande")), pp.findById(rs.getInt("produit")),
+						ds.findById(rs.getInt("demande")), ps.findById(rs.getInt("produit")),
 						rs.getInt("quantite"), rs.getDouble("prixAchat")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return lignesDemandes;
 	}
+
+   
 
 }
 

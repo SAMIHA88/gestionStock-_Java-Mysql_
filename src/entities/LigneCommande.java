@@ -1,58 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package entities;
 
 import java.util.Objects;
 
+/**
+ *
+ * @author samih
+ */
 public class LigneCommande {
-	private Commande commande;
-	private Produit produit;
-	private int quantite;
-	private double prixVente;
+    private Commande commande ;
+    private Produit produit;
+    private int quantite;
+    private double prixVente;
 
-	public LigneCommande(Commande commande, Produit produit, int quantite, double prixVente) {
-		super();
-		this.commande = commande;
-		this.produit = produit;
-		this.quantite = quantite;
-		this.prixVente = prixVente;
-	}
+    public LigneCommande(Commande commande, Produit produit, int quantite, double prixVente) {
+        this.commande = commande;
+        this.produit = produit;
+        this.quantite = quantite;
+        this.prixVente = prixVente;
+    }
 
-	public Commande getCommande() {
-		return commande;
-	}
+    public Commande getCommande() {
+        return commande;
+    }
 
-	public void setCommande(Commande commande) {
-		this.commande = commande;
-	}
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
 
-	public Produit getProduit() {
-		return produit;
-	}
+    public Produit getProduit() {
+        return produit;
+    }
 
-	public void setProduit(Produit produit) {
-		this.produit = produit;
-	}
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
 
-	public int getQuantite() {
-		return quantite;
-	}
+    public int getQuantite() {
+        return quantite;
+    }
 
-	public void setQuantite(int quantite) {
-		this.quantite = quantite;
-	}
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
 
-	public double getPrixVente() {
-		return prixVente;
-	}
+    public double getPrixVente() {
+        return prixVente;
+    }
 
-	public void setPrixVente(double prixVente) {
-		this.prixVente = prixVente;
-	}
+    public void setPrixVente(double prixVente) {
+        this.prixVente = prixVente;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.commande);
-        hash = 67 * hash + Objects.hashCode(this.produit);
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.commande);
+        hash = 89 * hash + Objects.hashCode(this.produit);
         return hash;
     }
 
@@ -74,9 +82,11 @@ public class LigneCommande {
         return true;
     }
 
-	@Override
-	public String toString() {
-		return produit.getDesignation() + " Q : " + quantite + " Prix : " + prixVente;
-	}
-
+    @Override
+    public String toString() {
+        return "LigneCommande{" + "commande=" + commande + ", produit=" + produit + ", quantite=" + quantite + ", prixVente=" + prixVente + '}';
+    }
+    
+    
+    
 }

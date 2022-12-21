@@ -98,4 +98,39 @@ public class CategorieService implements IDao<Categorie>{
 		}
 		return categories;
     }
+    public List<Categorie> findAllName() {
+   	  List<Categorie> catego = new ArrayList<Categorie>();
+        try {
+            String sql = "select nom from categorie";
+            Statement st = connexion.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                catego.add(new Categorie( rs.getString("libelle")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return catego;
+    }
+      
+      
+      
+         public int getCategoryIdByName(String categoryName,List<Categorie> categories){
+        
+        for(Categorie cate : categories){
+            if(categoryName.toLowerCase().equals(cate.getLibelle().toLowerCase())){
+               return cate.getId();
+            }
+        }
+        return -1;
+    }
+      public int getCategoryIdBy(String categoryName){
+        
+        for(Categorie cate : this.findAll()){
+            if(categoryName.toLowerCase().equals(cate.getLibelle().toLowerCase())){
+               return cate.getId();
+            }
+        }
+        return -1;
+    }
 }

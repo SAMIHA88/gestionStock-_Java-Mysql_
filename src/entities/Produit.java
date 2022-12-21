@@ -26,7 +26,7 @@ public class Produit {
 	public Produit(int id,String designation, Categorie categorie, double prixAchat,double tva, int quantite, Rayon rayon) {
 		super();
 		this.id = id;
-                this.designation=designation;
+                      this.designation=designation;
 		this.categorie = categorie;
 		this.prixAchat = prixAchat;
                 this.tva=tva;
@@ -45,10 +45,6 @@ public class Produit {
 		this.quantite = 0;
 		this.rayon = rayon;
 	}
-
-    public Produit(String designation, Categorie categorie, double prixAchat, double tva, int id, Rayon rayon, int quantite) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
       
 	public int getQuantite() {
 		return quantite;

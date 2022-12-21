@@ -102,5 +102,40 @@ public class RayonService implements IDao<Rayon>{
 		}
 		return rayons;
 	}
+        public List<Rayon> findAllName() {
+   	  List<Rayon> catego = new ArrayList<Rayon>();
+        try {
+            String sql = "select nom from rayon";
+            Statement st = connexion.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                catego.add(new Rayon( rs.getString("code")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return catego;
+    }
+      
+      
+      
+         public int getRayonIdByName(String categoryName,List<Rayon> categories){
+        
+        for(Rayon cate : categories){
+            if(categoryName.toLowerCase().equals(cate.getCode().toLowerCase())){
+               return cate.getId();
+            }
+        }
+        return -1;
+    }
+      public int getRayonIdBy(String categoryName){
+        
+        for(Rayon cate : this.findAll()){
+            if(categoryName.toLowerCase().equals(cate.getCode().toLowerCase())){
+               return cate.getId();
+            }
+        }
+        return -1;
+    }
 
 }
