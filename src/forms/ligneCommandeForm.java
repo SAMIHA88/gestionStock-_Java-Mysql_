@@ -20,7 +20,8 @@ import services.ProduitService;
  * @author samih
  */
 public class ligneCommandeForm extends javax.swing.JInternalFrame {
-    
+    static Commande commande;
+    static Produit produit;
     private ProduitService ps;
     private CommandeService cms;
     private LigneCommandeService lcs; 
@@ -279,7 +280,7 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
           int quantite  = Integer.parseInt(txtQuantite.getText());
             double prixVente  = Double.parseDouble(txtPrixVente.getText());
        if (lcs.update(new LigneCommande(commande,produit,quantite,prixVente))) {
-            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            JOptionPane.showMessageDialog(this, "Bien modifié");
             loadCommande();
         }    
     }//GEN-LAST:event_btnModifierActionPerformed
@@ -295,13 +296,13 @@ public class ligneCommandeForm extends javax.swing.JInternalFrame {
             }
       
     }//GEN-LAST:event_btnSupprimerActionPerformed
-static Commande commande;
-static Produit produit;
+
     private void listeLigneCommandesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeLigneCommandesMouseClicked
         // TODO add your handling code here:
         commande= (Commande)model.getValueAt(listeLigneCommandes.getSelectedRow(),0);
        produit= (Produit)model.getValueAt(listeLigneCommandes.getSelectedRow(),1);
-          
+          int quantite=Integer.parseInt( model.getValueAt(listeLigneCommandes.getSelectedRow(),2).toString());
+        double prixVente=Double.parseDouble( model.getValueAt(listeLigneCommandes.getSelectedRow(),3).toString());
     }//GEN-LAST:event_listeLigneCommandesMouseClicked
 
 

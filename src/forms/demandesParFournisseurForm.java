@@ -193,7 +193,7 @@ public class demandesParFournisseurForm extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
          Fournisseur fournisseur = (Fournisseur) fournisseurList.getSelectedItem();
        model.setRowCount(0);
-          for (Demande dmd : dms.findAll()) {
+          for (Demande dmd : dms.findByFournisseur(fournisseur)) {
             model.addRow(new Object[]{
                 dmd.getCode(),
                 dmd.getDate(),

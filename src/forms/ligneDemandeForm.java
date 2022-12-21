@@ -5,19 +5,61 @@
  */
 package forms;
 
+import entities.Demande;
+import entities.LigneDemande;
+import entities.Produit;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import services.DemandeService;
+import services.LigneDemandeService;
+import services.ProduitService;
+
 /**
  *
  * @author samih
  */
-public class ligneDemandeForm extends javax.swing.JInternalFrame {
 
+public class ligneDemandeForm extends javax.swing.JInternalFrame {
+  private ProduitService ps;
+    private DemandeService dms;
+    private LigneDemandeService lds; 
+    private DefaultTableModel model;
+    static Demande demande;
+    static Produit produit;
     /**
      * Creates new form ligneCommandesForm
      */
     public ligneDemandeForm() {
         initComponents();
+     ps=new ProduitService();
+        loadProduit();
+         dms=new DemandeService();
+         loadDemande();
+        model = (DefaultTableModel) listeLigneDemandes.getModel();
+        loadLigneDemande();
+    }
+    private void loadLigneDemande() {
+        model.setRowCount(0);
+        for (LigneDemande ld: lds.findAll()) {
+            model.addRow(new Object[]{
+              ld.getDemande(),
+                ld.getProduit(),
+                 ld.getQuantite(),
+                ld.getPrixAchat()
+               
+            });
+        }
     }
 
+    private void loadDemande() {
+        for (Demande d : dms.findAll()) {
+           demandeList.addItem(d);
+       }
+    }private void loadProduit() {
+        for (Produit p : ps.findAll()) {
+           produitList.addItem(p);
+       }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,6 +131,11 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
                 "Commande", "Produit", "Quantité", "Prix d'Achat"
             }
         ));
+        listeLigneDemandes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listeLigneDemandesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listeLigneDemandes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -111,14 +158,29 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
         btnAjouter.setBackground(new java.awt.Color(0, 51, 255));
         btnAjouter.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnAjouter.setText("Ajouter");
+        btnAjouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjouterActionPerformed(evt);
+            }
+        });
 
         btnSupprimer.setBackground(new java.awt.Color(255, 0, 51));
         btnSupprimer.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnSupprimer.setText("Supprimer");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
 
         btnModifier.setBackground(new java.awt.Color(0, 153, 0));
         btnModifier.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
         btnModifier.setText("Modifier");
+        btnModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifierActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,6 +260,48 @@ public class ligneDemandeForm extends javax.swing.JInternalFrame {
     private void demandeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demandeListActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_demandeListActionPerformed
+
+    private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
+        // TODO add your handling code here:
+        Demande demande = (Demande) demandeList.getSelectedItem();
+          Produit produit = (Produit) produitList.getSelectedItem();
+          int quantite  = Integer.parseInt(txtQuantite.getText());
+            double prixAchat  = Double.parseDouble(txtPrixAchat.getText());
+        if (lds.create(new LigneDemande(demande,produit,quantite,prixAchat))) {
+            JOptionPane.showMessageDialog(this, "Bien ajouté");
+            loadDemande();
+        }
+    }//GEN-LAST:event_btnAjouterActionPerformed
+
+    private void btnModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierActionPerformed
+        // TODO add your handling code here:
+        Demande demande = (Demande) demandeList.getSelectedItem();
+          Produit produit = (Produit) produitList.getSelectedItem();
+          int quantite  = Integer.parseInt(txtQuantite.getText());
+            double prixAchat  = Double.parseDouble(txtPrixAchat.getText());
+       if (lds.update(new LigneDemande(demande,produit,quantite,prixAchat))) {
+            JOptionPane.showMessageDialog(this, "Bien modifié");
+            loadDemande();
+        }    
+    }//GEN-LAST:event_btnModifierActionPerformed
+
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+        // TODO add your handling code here:
+        int reponse = JOptionPane.showConfirmDialog(this, "Voulez vous vraiment supprimer cette ligne de commande ? ");
+            if(reponse == 0){
+                lds.delete(lds.findById(demande,produit));
+                loadDemande();
+                JOptionPane.showMessageDialog(this, "Bien supprimé");
+            }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
+    private void listeLigneDemandesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeLigneDemandesMouseClicked
+        // TODO add your handling code here:
+       demande= (Demande)model.getValueAt(listeLigneDemandes.getSelectedRow(),0);
+       produit= (Produit)model.getValueAt(listeLigneDemandes.getSelectedRow(),1);
+        int quantite=Integer.parseInt( model.getValueAt(listeLigneDemandes.getSelectedRow(),2).toString());
+        double prixAchat=Double.parseDouble( model.getValueAt(listeLigneDemandes.getSelectedRow(),3).toString());
+    }//GEN-LAST:event_listeLigneDemandesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

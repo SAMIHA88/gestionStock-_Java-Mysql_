@@ -12,10 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class RayonService implements IDao<Rayon>{
-	 private ProduitService ps;
+	 
         
        public RayonService(){
-           ps=new ProduitService();
+          
        }
 	@Override
 	public boolean create(Rayon o) {

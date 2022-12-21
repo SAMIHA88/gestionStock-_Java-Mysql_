@@ -2,6 +2,7 @@ package entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Commande {
@@ -51,8 +52,8 @@ public class Commande {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + this.code;
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.client);
         return hash;
     }
 
@@ -65,11 +66,13 @@ public class Commande {
             return false;
         }
         final Commande other = (Commande) obj;
-        if (this.code != other.code) {
+        if (!Objects.equals(this.client, other.client)) {
             return false;
         }
         return true;
     }
+
+  
 
 
 

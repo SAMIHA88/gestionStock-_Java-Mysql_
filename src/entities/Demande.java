@@ -3,6 +3,7 @@ package entities;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Demande {
 	private int code;
@@ -49,6 +50,28 @@ public class Demande {
 	public void setFournisseur(Fournisseur fournisseur) {
 		this.fournisseur = fournisseur;
 	}
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.fournisseur);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Demande other = (Demande) obj;
+        if (!Objects.equals(this.fournisseur, other.fournisseur)) {
+            return false;
+        }
+        return true;
+    }
 
 
 

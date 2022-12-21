@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class LigneDemande {
 	private Demande demande;
 	private Produit produit;
@@ -45,6 +47,32 @@ public class LigneDemande {
 	public void setPrixVente(double prixAchat) {
 		this.prixAchat = prixAchat;
 	}
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.demande);
+        hash = 67 * hash + Objects.hashCode(this.produit);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final LigneDemande other = (LigneDemande) obj;
+        if (!Objects.equals(this.demande, other.demande)) {
+            return false;
+        }
+        if (!Objects.equals(this.produit, other.produit)) {
+            return false;
+        }
+        return true;
+    }
 
 	@Override
 	public String toString() {

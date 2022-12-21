@@ -1,31 +1,36 @@
 package services;
 
+import entities.Categorie;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Produit;
 import connexion.connexion;
 import dao.IDao;
-import entities.Categorie;
-import entities.Produit;
 import entities.Rayon;
-import java.sql.PreparedStatement;
+import java.sql.Date;
 
 public class ProduitService implements IDao<Produit> {
+
+	private RayonService rys;
         private CategorieService cs;
-        private RayonService rys;
-        
-       public ProduitService(){
-           cs=new CategorieService();
-       }
+
+	public ProduitService() {
+		rys = new RayonService();
+	     cs=new CategorieService();
+        }
+
 	@Override
 	public boolean create(Produit o) {
 		try {
-			String sql ="insert into produit values(null ,'" + o.getDesignation() + "' ,'" + o.getPrixAchat()+ "' ,'" + o.getCategorie().getId()+"' ,'"+ o.getTva() + "' ,'"+ o.getRayon().getId() + "' ) ";
+			String sql = "insert into produit values(null,'"+o.getDesignation()+"',"+ o.getPrixAchat() +","  + o.getCategorie().getId() +  ","+o.getTva()+","
+					+ o.getRayon().getId() + "," + o.getQuantite() + ")";
+                        
 			Statement st = connexion.getConnection().createStatement();
-			if(st.executeUpdate(sql)==1) {
+			if (st.executeUpdate(sql) == 1) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -33,17 +38,14 @@ public class ProduitService implements IDao<Produit> {
 			e.printStackTrace();
 		}
 		return false;
-		
 	}
 
 	@Override
 	public boolean delete(Produit o) {
-		// TODO Auto-generated method stub
 		try {
-			String sql ="delete from produit where id= "+o.getId();
+			String sql = "delete from produit where id=" + o.getId();
 			Statement st = connexion.getConnection().createStatement();
-			if(st.executeUpdate(sql)==1) {
-				
+			if (st.executeUpdate(sql) == 1) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -52,21 +54,16 @@ public class ProduitService implements IDao<Produit> {
 		}
 		return false;
 	}
-	
 
 	@Override
 	public boolean update(Produit o) {
-         try {
-			String req = "update produit set designation = ? , prixAchat = ?, categorie = ?, tva = ? where id = ?";
-			PreparedStatement ps = connexion.getConnection().prepareStatement(req);
-			ps.setString(1, o.getDesignation());
-			ps.setDouble(2, o.getPrixAchat());
-			ps.setInt(3, o.getCategorie().getId());
-			ps.setDouble(5, o.getTva());
-			ps.setInt(6, o.getId());
-			if (ps.executeUpdate() == 1)
+		try {
+			String sql = "update produit set Designation'"+o.getDesignation()+"',categorie=" + o.getCategorie().getId() + ",prixAchat=" + o.getPrixAchat()+",TVA="+o.getTva()
+					+ ",quantite=" + o.getQuantite() + ",rayon=" + o.getRayon().getId();
+			Statement st = connexion.getConnection().createStatement();
+			if (st.executeUpdate(sql) == 1) {
 				return true;
-
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,55 +73,96 @@ public class ProduitService implements IDao<Produit> {
 
 	@Override
 	public Produit findById(int id) {
-			Produit produit = null;
-        try {
-            String sql = "select * from produit where id = " + id;
-            Statement st = connexion.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if (rs.next()) {
-                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+		try {
+			String sql = "select * from produit where id=" + id;
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<Produit> findAll() {
 		List<Produit> produits;
 		try {
-                        produits=new ArrayList<Produit>();
-			String sql="select * from produit";
+			produits = new ArrayList<Produit>();
+			String sql = "select * from produit";
 			Statement st = connexion.getConnection().createStatement();
-			ResultSet rs=st.executeQuery(sql);
-			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
 			}
-                        return produits;
+			return produits;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-                        System.out.println(e.getMessage());
+		}
+		return null;
+	}
+       
+        public List<Produit> findByDesignation(String designation) {
+		List<Produit> produits;
+		try {
+			produits = new ArrayList<Produit>();
+			String sql = "select * from produit p where designation='"+designation+"'";
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+			}
+			return produits;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+        public List<Produit> findByPrix(double prix) {
+		List<Produit> produits;
+		try {
+			produits = new ArrayList<Produit>();
+			String sql = "select * from produit p where prixAchat<="+prix;
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+			}
+			return produits;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+        public List<Produit> findByRayon(Rayon rayon) {
+		List<Produit> produits;
+		try {
+			produits = new ArrayList<Produit>();
+			String sql = "select * from produit p,rayon r where p.rayon=r.id and r.code='"+rayon.getCode()+"'";
+			Statement st = connexion.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+			}
+			return produits;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
 
-        public List<Produit> findByRayon(Rayon r) {
-		List<Produit> produits = new ArrayList<Produit>();
-		try {
-			String sql="select * from produit where rayon= "+r.getId();
-			Statement st = connexion.getConnection().createStatement();
-			ResultSet rs=st.executeQuery(sql);
-			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return produits;
-	}
          public List<Produit> findByCategorie(Categorie c) {
 		List<Produit> produits = new ArrayList<Produit>();
 		try {
@@ -132,8 +170,9 @@ public class ProduitService implements IDao<Produit> {
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
-			}
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+                        }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,12 +182,13 @@ public class ProduitService implements IDao<Produit> {
           public List<Produit> commandesBetweenDates(java.util.Date d1 ,java.util.Date d2) {
 		List<Produit> produits = new ArrayList<Produit>();
 		try {
-			String sql="select * from produit,lignecommande,commande where produit.id=lignecommande.produit and lignecommande.commande=commande.code and date between "+d1+"and"+d2;
+			String sql="select * from produit,lignecommande,commande where produit.id=lignecommande.produit and lignecommande.commande=commande.code and date between "+new Date(d1.getTime())+"and"+new Date(d2.getTime());
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
-			}
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+                        }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -163,13 +203,16 @@ public class ProduitService implements IDao<Produit> {
 			Statement st = connexion.getConnection().createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {
-				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"),rs.getDouble("prixAchat"),cs.findById(rs.getInt("categorie")), rs.getDouble("tva"),rys.findById(rs.getInt("rayon"))));
-			}
+				produits.add(new Produit(rs.getInt("id"),rs.getString("designation"), cs.findById(rs.getInt("categorie")), rs.getDouble("prixAchat"),rs.getDouble("tva"),
+						rs.getInt("quantite"), rys.findById(rs.getInt("rayon"))));
+                        }
+                        
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return produits;
 	}
-
+     
+        
 }
