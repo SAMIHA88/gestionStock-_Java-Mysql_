@@ -183,7 +183,7 @@ public class Main extends javax.swing.JFrame {
         editMenu.add(produitsParRayon);
 
         produitRuptureStock.setMnemonic('y');
-        produitRuptureStock.setText("Produits en rupture de stock");
+        produitRuptureStock.setText("Produits par prix");
         produitRuptureStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 produitRuptureStockActionPerformed(evt);
@@ -356,9 +356,9 @@ public class Main extends javax.swing.JFrame {
 
     private void produitRuptureStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitRuptureStockActionPerformed
         // TODO add your handling code here:
-          produitRuptureStockForm prsf = new produitRuptureStockForm();
-        desktopPane.add(prsf);
-        prsf.setVisible(true);
+          produitsParPrix pr = new produitsParPrix();
+        desktopPane.add(pr);
+        pr.setVisible(true);
     }//GEN-LAST:event_produitRuptureStockActionPerformed
 
     private void produitsCommandesEntreDeuxDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produitsCommandesEntreDeuxDatesActionPerformed

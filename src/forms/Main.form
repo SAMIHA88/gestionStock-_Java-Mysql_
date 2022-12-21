@@ -135,7 +135,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="produitRuptureStock">
               <Properties>
                 <Property name="mnemonic" type="int" value="121"/>
-                <Property name="text" type="java.lang.String" value="Produits en rupture de stock"/>
+                <Property name="text" type="java.lang.String" value="Produits par prix"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="produitRuptureStockActionPerformed"/>

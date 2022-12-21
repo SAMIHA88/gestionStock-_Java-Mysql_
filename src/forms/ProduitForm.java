@@ -337,7 +337,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         double tva=Double.parseDouble(txtTva.getText());
         Rayon rayon=(Rayon) rayonList.getSelectedItem();
         int quantite= Integer.parseInt(txtQuantite.getText());
-        if(ps.update(new Produit(id, designation, categorie, prixAchat,tva,quantite, rayon))){
+        if(ps.update(new Produit( designation, categorie, prixAchat, tva, quantite,  rayon))){
             JOptionPane.showMessageDialog(this, "Bien modifié");
             loadProduits();
     }//GEN-LAST:event_btnModifyActionPerformed
@@ -365,7 +365,8 @@ public class ProduitForm extends javax.swing.JInternalFrame {
     private void listProduitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listProduitMouseClicked
         // TODO add your handling code here:
           id=Integer.parseInt( model.getValueAt(listProduit.getSelectedRow(),0).toString());
-          String designation=model.getValueAt(listProduit.getSelectedRow(),1).toString();
+          String designation;
+        designation = model.getValueAt(listProduit.getSelectedRow(),1).toString();
           double txtPrixAchat=Double.parseDouble( model.getValueAt(listProduit.getSelectedRow(),2).toString());
        categorieList.setSelectedItem((Categorie)model.getValueAt(listProduit.getSelectedRow(),3));
        double txtTva=Double.parseDouble( model.getValueAt(listProduit.getSelectedRow(),4).toString());
