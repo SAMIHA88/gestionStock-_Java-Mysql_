@@ -18,7 +18,7 @@ public class Produit {
 		this.categorie = categorie;
 		this.prixAchat = prixAchat;
                 this.tva=tva;
-		this.quantite = 0;
+		this.quantite = 1;
 		this.rayon = rayon;
 	}
 	
@@ -42,7 +42,7 @@ public class Produit {
 		this.categorie = categorie;
 		this.prixAchat = prixAchat;
                 this.tva=tva;
-		this.quantite = 0;
+		this.quantite = 1;
 		this.rayon = rayon;
 	}
       
